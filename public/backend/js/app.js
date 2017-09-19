@@ -27003,14 +27003,28 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 pass: ''
             },
             loginRules: {
-                email: [{ type: 'email', required: true, message: '请输入用户名', trigger: blur }],
-                pass: [{ required: true, message: '请输入密码', trigger: blur }, { min: 6, max: 10, message: '密码长度应该在6-10个之间', trigger: blur }]
+                email: [{ required: true, message: '请输入用户名', trigger: 'blur' }, { type: 'email', message: '用户名格式不正确', trigger: 'blur' }],
+                pass: [{ required: true, message: '请输入密码', trigger: 'blur' }, { min: 6, max: 10, message: '密码长度应该在6-10个之间', trigger: 'blur' }]
             }
         };
     },
 
     methods: {
-        submitLogin: function submitLogin() {}
+        submitLogin: function submitLogin(loginForm) {
+            var _this = this;
+            var _duration = 2 * 1000;
+            _this.$refs[loginForm].validate(function (valid) {
+                if (valid) {
+                    _this.loading = true;
+                    window.axios.post('/auth/login', _this.loginForm).then(function (response) {
+                        var data = response.date;
+                    }).catch(function (error) {});
+                } else {}
+            });
+        },
+        resetLogin: function resetLogin(loginForm) {
+            this.$refs[loginForm].resetFields();
+        }
     }
 });
 
@@ -81345,6 +81359,12 @@ if (false) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
+    directives: [{
+      name: "loading",
+      rawName: "v-loading",
+      value: (_vm.loading),
+      expression: "loading"
+    }],
     staticClass: "login-form"
   }, [_c('el-row', [_c('el-col', {
     attrs: {
@@ -81364,6 +81384,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "prop": "email"
     }
   }, [_c('el-input', {
+    attrs: {
+      "placeholder": "请输入用户名"
+    },
     model: {
       value: (_vm.loginForm.email),
       callback: function($$v) {
@@ -81377,6 +81400,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "prop": "pass"
     }
   }, [_c('el-input', {
+    attrs: {
+      "placeholder": "请输入密码"
+    },
     model: {
       value: (_vm.loginForm.pass),
       callback: function($$v) {
@@ -81390,10 +81416,16 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     },
     on: {
       "click": function($event) {
-        _vm.submitLogin()
+        _vm.submitLogin('loginForm')
       }
     }
-  }, [_vm._v("登陆")]), _vm._v(" "), _c('el-button', [_vm._v("取消")]), _vm._v(">\n                ")], 1)], 1)], 1)], 1)], 1)
+  }, [_vm._v("登陆")]), _vm._v(" "), _c('el-button', {
+    on: {
+      "click": function($event) {
+        _vm.resetLogin('loginForm')
+      }
+    }
+  }, [_vm._v("取消")]), _vm._v(">\n                ")], 1)], 1)], 1)], 1)], 1)
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
