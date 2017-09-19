@@ -14,3 +14,7 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::group(['prefix' => 'back', 'namespace' => 'Backend'], function () {
+   Route::get('/', 'IndexController@index')->name('admin');
+});
