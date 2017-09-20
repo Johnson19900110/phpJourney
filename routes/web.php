@@ -15,6 +15,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+/*
+ * Backend
+ * */
 Route::group(['prefix' => 'back', 'namespace' => 'Backend'], function () {
    Route::get('/', 'IndexController@index')->name('admin');
+   Route::post('/auth/login', 'AuthController@authenticate');
+   Route::post('/auth/check', 'AuthController@checkUser');
 });

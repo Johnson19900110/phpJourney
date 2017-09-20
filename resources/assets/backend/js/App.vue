@@ -9,32 +9,28 @@
 <script type="text/ecmascript-6">
     export default{
         name: 'app',
-        data(){
-            return {
-                //sessionID: this.$cookie.get('myPersimmon')
-                user: JSON.parse(sessionStorage.getItem('myPersimmon'))
-            }
-        },
         watch: {
-            '$route'(to, from) {//监听路由改变
-                this.authLogin();
+            '$route'(to, from) { //监听路由改变
+                if(to.path !== '/login') {
+                    this.authLogin();
+                }
             }
         },
         methods: {
             authLogin: function () {
                 let _this = this;
-                let user = JSON.parse(sessionStorage.getItem('myPersimmon'));
+                let user = JSON.parse(sessionStorage.getItem('php_journey'));
                 if (!user) {
                     _this.$router.push({path: 'login'});
                 }
-//                _this.axios.post('/auth/check').then(function (response) {
-//                    if (response.data.auth == 'Unauthenticated') {
-//                        sessionStorage.removeItem('myPersimmon');
-//                        _this.$router.push({path: '/login'});
-//                    }
-//                }).catch(function (error) {
-//                    console.log(error);
-//                });
+                window.axios.post('/auth/check').then(function (response) {
+                    if ( response.data ) {
+                        sessionStorage.removeItem('php_journey');
+                        _this.$router.push({path: '/login'});
+                    }
+                }).catch(function (error) {
+                    console.log(error);
+                });
             }
         },
         created: function () {
