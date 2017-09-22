@@ -62,13 +62,14 @@
             logout() {
                 let _this = this;
                 let _duration = 1000;
-                _this.$confirm('确认退出吗？', '提示', {type: 'warning'}).then( () => function () {
+                _this.$confirm('确认退出吗？', '提示', {type: 'warning'}).then( () => {
                     window.axios.post('auth/logout').then( function (response) {
                         let data = response.data;
                         if(!data.status) {
                             sessionStorage.removeItem('php_journey');
+                            console.log(data.message);
                             _this.$message({
-                                info: data.message,
+                                message: data.message,
                                 type: 'success',
                                 duration: _duration
                             });
@@ -80,8 +81,13 @@
                         console.log(error);
                         _this.$message.error("退出失败");
                     })
-                });
+                }).catch(() => {
+                    console.log('cancel')
+                })
             }
+        },
+        mounted() {
+            console.log(this.$route);
         }
     }
 </script>

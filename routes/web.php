@@ -22,4 +22,5 @@ Route::group(['prefix' => 'back', 'namespace' => 'Backend'], function () {
    Route::get('/', 'IndexController@index')->name('admin');
    Route::post('/auth/login', 'AuthController@authenticate');
    Route::post('/auth/check', 'AuthController@checkUser');
+   Route::post('/auth/logout', 'AuthController@logout');
 });
