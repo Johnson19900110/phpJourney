@@ -13,9 +13,8 @@ class AuthController extends Controller
     {
         $email = $request->input('email');
         $pass = $request->input('pass');
-//        $remember = $request->input('remember', true);
 
-        if(Auth::attempt(['email'=>$email, 'password'=>$pass])) {
+        if(Auth::attempt(['email'=>$email, 'password'=>$pass], $request->filled('remember'))) {
             $user = Auth::user();
             $data = array(
                 'status' => 0,

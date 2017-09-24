@@ -13,7 +13,7 @@
                     {{ sysUserName }}<i class="el-icon-caret-bottom el-icon--right"></i>
                   </span>
                     <el-dropdown-menu slot="dropdown" style="color: #000">
-                        <el-dropdown-item>用户设置</el-dropdown-item>
+                        <el-dropdown-item @click.native="userSetting">用户设置</el-dropdown-item>
                         <el-dropdown-item divided @click.native="logout">退出登录</el-dropdown-item>
                     </el-dropdown-menu>
                 </el-dropdown>
@@ -84,6 +84,9 @@
                 }).catch(() => {
                     console.log('cancel')
                 })
+            },
+            userSetting() {
+                this.$router.push({path: 'user'});
             }
         },
         mounted() {

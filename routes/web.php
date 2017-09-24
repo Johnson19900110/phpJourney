@@ -23,4 +23,9 @@ Route::group(['prefix' => 'back', 'namespace' => 'Backend'], function () {
    Route::post('/auth/login', 'AuthController@authenticate');
    Route::post('/auth/check', 'AuthController@checkUser');
    Route::post('/auth/logout', 'AuthController@logout');
+
+});
+
+Route::group(['middleware' => 'auth', 'prefix' => 'back', 'namespace' => 'Backend'], function () {
+    Route::resource('/users', 'UserController');
 });

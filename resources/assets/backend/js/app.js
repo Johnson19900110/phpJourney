@@ -27,6 +27,7 @@ import App from './App.vue';
 import Login from './components/user/login.vue';
 import Index from './components/main/index.vue';
 import Main from  './components/main/main.vue';
+import UserSetting from './components/user/userSetting.vue';
 
 const routes = [
     {
@@ -78,11 +79,10 @@ const routes = [
         path: '/',
         component: Index,
         name: '',
-        iconCls: 'fa fa-home',
         leaf: true,
         hidden: true,
         children: [
-            { path: '/user', component: Main, name: '用户设置'}
+            { path: '/user', component: UserSetting, name: '用户设置'}
         ]
     }
 ];

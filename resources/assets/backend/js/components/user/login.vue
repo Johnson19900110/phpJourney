@@ -49,7 +49,7 @@
                         _this.loading = true;
                         window.axios.post('/auth/login', _this.loginForm).then(function (response) {
                             let data = response.data;
-                            if( !data.status ) {
+                            if( data.status === 0 ) {
                                 sessionStorage.setItem('php_journey', JSON.stringify(data.user));
                                 _this.$message({
                                     message: data.message,
