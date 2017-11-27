@@ -10,7 +10,7 @@
             <el-col :span="3">
                 <el-dropdown>
                   <span class="el-dropdown-link" style="color: #ffffff;font-size: 16px">
-                    {{ sysUserName }}<i class="el-icon-caret-bottom el-icon--right"></i>
+                    {{ userName }}<i class="el-icon-caret-bottom el-icon--right"></i>
                   </span>
                     <el-dropdown-menu slot="dropdown" style="color: #000">
                         <el-dropdown-item @click.native="userSetting">用户设置</el-dropdown-item>
@@ -34,7 +34,16 @@
                 </el-menu>
             </aside>
             <section class="panel-content">
-                <el-col :span="24">
+                <el-col :span="24" style="margin-bottom:15px;">
+                    <span style="color: #000000;font-size: 18px;font-weight: bold;">{{currentPathName}}</span>
+                    <el-breadcrumb separator="/" style="float:right;">
+                        <el-breadcrumb-item :to="{ path: '/index' }">首页</el-breadcrumb-item>
+                        <el-breadcrumb-item v-if="currentPathNameParent!=''">{{currentPathNameParent}}
+                        </el-breadcrumb-item>
+                        <el-breadcrumb-item v-if="currentPathName!=''">{{currentPathName}}</el-breadcrumb-item>
+                    </el-breadcrumb>
+                </el-col>
+                <el-col :span="24" style="background-color: #fff;box-sizing: border-box;padding: 15px">
                     <router-view></router-view>
                 </el-col>
             </section>
@@ -49,8 +58,15 @@
                 currentPath: '/index',
                 currentPathName: '',
                 currentPathNameParent: '首页',
-                sysUserName: 'Johnson',
+                userName: ''
             }
+        },
+        watch: {
+          '$route'(to, from) {
+              this.currentPath = to.path;
+              this.currentPathName = to.name;
+              this.currentPathNameParent = to.matched[0].name;
+          }
         },
         methods: {
             handleOpen() {
@@ -91,6 +107,14 @@
         },
         mounted() {
             console.log(this.$route);
+            this.currentPath = this.$route.path;
+            this.currentPathName = this.$route.name;
+            this.currentPathNameParent = this.$route.matched[0].name;
+
+            let user = sessionStorage.getItem('php_journey');
+            if(user) {
+                this.userName = JSON.parse(user).name;
+            }
         }
     }
 </script>

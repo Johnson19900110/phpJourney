@@ -28,4 +28,6 @@ Route::group(['prefix' => 'back', 'namespace' => 'Backend'], function () {
 
 Route::group(['middleware' => 'auth', 'prefix' => 'back', 'namespace' => 'Backend'], function () {
     Route::resource('/users', 'UserController');
+    Route::resource('/category', 'CategoryController');
+    Route::resource('/posts', 'PostController');
 });

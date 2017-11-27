@@ -21,6 +21,13 @@ Vue.use(VueRouter);
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
+import util from './lib/util';
+import marked from 'marked';
+import localforage from 'localforage';
+Vue.prototype.util = util;
+Vue.prototype.marked = marked;
+Vue.prototype.localforage = localforage;
+
 // Vue.component('example', require('./components/Example.vue'));
 // Vue.component('login', require('./components/user/login.vue'));
 import App from './App.vue';
@@ -28,6 +35,8 @@ import Login from './components/user/login.vue';
 import Index from './components/main/index.vue';
 import Main from  './components/main/main.vue';
 import UserSetting from './components/user/userSetting.vue';
+import Category from './components/category/category.vue';
+import post from './components/post/post.vue'
 
 const routes = [
     {
@@ -42,7 +51,7 @@ const routes = [
         iconCls: 'fa fa-home',
         leaf: true,
         children: [
-            {path: '/index', component: Main, name: '首页'}
+            {path: '/index', component: Main, name: '仪盘表'}
         ]
     },
     {
@@ -52,7 +61,8 @@ const routes = [
         iconCls: 'fa fa-file-word-o',
         children: [
             {path: '/article', component: Main, name: '文章管理'},
-            {path: '/article/add', component: Main, name: '发布文章'}
+            {path: '/article/add', component: post, name: '发布文章'},
+            {path: '/article/category', component: Category, name: '分类管理'}
         ]
     },
     {

@@ -1,22 +1,24 @@
 <template>
-    <div class="login-form" v-loading="loading">
-        <el-row>
-            <el-col :span="24">
-                <el-form label-position="right" label-width="80px" :model="loginForm" ref="loginForm" :rules="loginRules">
-                    <el-form-item label="用户名：" prop="email">
-                        <el-input v-model="loginForm.email" placeholder="请输入用户名"></el-input>
-                    </el-form-item>
-                    <el-form-item label="密码：" prop="pass">
-                        <el-input type="password" v-model="loginForm.pass" placeholder="请输入密码"></el-input>
-                    </el-form-item>
-                    <el-form-item>
-                        <el-button type="primary" @click="submitLogin('loginForm')">登陆</el-button>
-                        <el-button @click="resetLogin('loginForm')">取消</el-button>>
-                    </el-form-item>
-                </el-form>
-            </el-col>
-        </el-row>
-    </div>
+   <div class="login-body">
+       <div class="login-form" v-loading="loading">
+           <el-row>
+               <el-col :span="24">
+                   <el-form label-position="right" label-width="80px" :model="loginForm" ref="loginForm" :rules="loginRules">
+                       <el-form-item label="用户名：" prop="email">
+                           <el-input v-model="loginForm.email" placeholder="请输入用户名"></el-input>
+                       </el-form-item>
+                       <el-form-item label="密码：" prop="pass">
+                           <el-input type="password" v-model="loginForm.pass" placeholder="请输入密码"></el-input>
+                       </el-form-item>
+                       <el-form-item>
+                           <el-button type="primary" @click="submitLogin('loginForm')">登陆</el-button>
+                           <el-button @click="resetLogin('loginForm')">取消</el-button>>
+                       </el-form-item>
+                   </el-form>
+               </el-col>
+           </el-row>
+       </div>
+   </div>
 </template>
 
 <script>
@@ -81,7 +83,7 @@
 </script>
 
 <style type="text/css">
-    body {
+    body{
         background: #324057;
         color: #FFF;
     }
