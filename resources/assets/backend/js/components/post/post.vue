@@ -5,11 +5,11 @@
             <el-form-item label="标题" prop="title">
                 <el-input v-model="myForm.title"></el-input>
             </el-form-item>
-            <el-form-item label="路由" prop="route">
+            <!--<el-form-item label="路由" prop="route">
                 <el-input placeholder="请输入内容" v-model="myForm.route">
                     <template slot="prepend">{{domain}}</template>
                 </el-input>
-            </el-form-item>
+            </el-form-item>-->
             <el-form-item label="标签">
                 <el-tag v-for="tag in myForm.tags" type="primary" :closable="true" :close-transition="false"
                         @close="handleClose(tag)"
@@ -25,7 +25,7 @@
                 </el-select>
             </el-form-item>
             <el-form-item label="内容" prop="markdown">
-                <el-input type="textarea" ref="myMarkdown" @change="textComplete" :autosize="{ minRows: 12}"
+                <el-input type="textarea" ref="myMarkdown" :autosize="{ minRows: 12}"
                           :rows="textareaRow" v-model="myForm.markdown"></el-input>
             </el-form-item>
             <el-form-item>
@@ -51,6 +51,7 @@
         margin-left: 80px;
         background: #faf5eb;
         padding: 10px;
+        color: #000;
     }
 
     .el-tag {
@@ -115,7 +116,7 @@
                 editFormLoading: false,
                 inputVisible: false,
                 inputValue:'',
-                domain: '',
+//                domain: '',
                 showTagsInput: '',
                 categories: [],
                 textareaRow: 15,
@@ -123,7 +124,7 @@
                 myForm: {
                     id: 0,
                     title: '',
-                    route: '',
+//                    route: '',
                     tags: [],
                     content: '',
                     category_id: 0,
@@ -150,6 +151,65 @@
         created () {
         },
         methods: {
+            submitMyForm: function (myForm) {
+                let _this = this;
+                _this.$refs[myForm].validate((valid) => {
+                    if (!valid){
+                        console.log('myForm valid error.');
+                        return false;
+                    }
+
+                    if (_this.myForm.id > 0) {
+                        window.axios.put('/posts/update', _this.myForm).then(function (response) {
+                            let res = response.data;
+                            _this.$message({
+                                message: res.status === 0 ? '编辑成功' : '编辑失败',
+                                type: res.status
+                            });
+                            if (res.status === 0) {
+                                _this.closeForm('myForm');
+                            }
+                        }).catch(function (error) {
+                            console.log(error);
+                        });
+                    } else {
+                        window.axios.post('/posts', _this.myForm).then(function (response) {
+                            let res = response.data;
+                            if (res.status === 0) {
+//                                _this.closeForm('myForm');
+                            }
+                            _this.$message({
+                                message: res.status === 0 ? '新增成功' : '新增失败',
+                                type: 'success'
+                            });
+                        }).catch(function (error) {
+                            if (error.response) {
+                                if (error.response.status === 422) {
+                                    for (let index in error.response.data) {
+                                        _this.$notify({
+                                            title: '警告',
+                                            message: error.response.data[index][0],
+                                            type: 'warning'
+                                        });
+                                    }
+                                }
+                            } else {
+                                console.log(error);
+                            }
+                        });
+                    }
+                });
+            },
+            closeForm: function (myForm) {
+                this.localforage.removeItem('myFormMarkdown').then(function () {
+                    console.log('Key is cleared!');
+                }).catch(function (err) {
+                    console.log(err);
+                });
+                this.$refs[myForm].resetFields();
+                this.$router.replace('/posts');
+                console.log('closeForm');
+            },
             getCategories() {
                 let _this = this;
                 window.axios.get('/category').then(function (response) {
@@ -190,19 +250,15 @@
                 this.domain = location.protocol + '//' + location.host + location.pathname;
             },
             setMarkdown: function () {
-//                let _this = this;
-//                this.localforage.getItem('myFormMarkdown').then(function (value) {
-//                    //console.log(value);
-//                    if (value != '' && value != null) {
-//                        _this.myForm.markdown = JSON.parse(value);
-//                    }
-//                }).catch(function (err) {
-//                    console.log(err);
-//                });
+                let _this = this;
+                this.localforage.getItem('myFormMarkdown').then(function (value) {
+                    if (value !== '' && value !== null) {
+                        _this.myForm.markdown = JSON.parse(value);
+                    }
+                }).catch(function (err) {
+                    console.log(err);
+                });
             },
-            textComplete() {
-
-            }
         },
         computed: {
             compiledMarkdown: function () {
@@ -231,15 +287,15 @@
                 }
             },
             '$route'(to, from) {//监听路由改变
-                if (this.$route.params.id == undefined) {
+                if (this.$route.params.id === undefined) {
                     this.$refs['myForm'].resetFields();
-                    this.fileList = [];
+//                    this.fileList = [];
                 }
             }
         },
         mounted() {
             this.getCategories();
-            this.setDomain();
+//            this.setDomain();
             this.setMarkdown();
         }
     }

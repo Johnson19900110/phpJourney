@@ -37,6 +37,11 @@ class PostController extends Controller
     public function store(Request $request)
     {
         //
+        dd($request->all());
+        return response()->json(array(
+            'status' => 0,
+            'data' => 'data'
+        ));
     }
 
     /**

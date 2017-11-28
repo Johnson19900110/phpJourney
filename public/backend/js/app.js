@@ -27597,6 +27597,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -27604,7 +27605,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             editFormLoading: false,
             inputVisible: false,
             inputValue: '',
-            domain: '',
+            //                domain: '',
             showTagsInput: '',
             categories: [],
             textareaRow: 15,
@@ -27612,7 +27613,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             myForm: {
                 id: 0,
                 title: '',
-                route: '',
+                //                    route: '',
                 tags: [],
                 content: '',
                 category_id: 0,
@@ -27630,6 +27631,65 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     created: function created() {},
 
     methods: {
+        submitMyForm: function submitMyForm(myForm) {
+            var _this = this;
+            _this.$refs[myForm].validate(function (valid) {
+                if (!valid) {
+                    console.log('myForm valid error.');
+                    return false;
+                }
+
+                if (_this.myForm.id > 0) {
+                    window.axios.put('/posts/update', _this.myForm).then(function (response) {
+                        var res = response.data;
+                        _this.$message({
+                            message: res.status === 0 ? '编辑成功' : '编辑失败',
+                            type: res.status
+                        });
+                        if (res.status === 0) {
+                            _this.closeForm('myForm');
+                        }
+                    }).catch(function (error) {
+                        console.log(error);
+                    });
+                } else {
+                    window.axios.post('/posts', _this.myForm).then(function (response) {
+                        var res = response.data;
+                        if (res.status === 0) {
+                            //                                _this.closeForm('myForm');
+                        }
+                        _this.$message({
+                            message: res.status === 0 ? '新增成功' : '新增失败',
+                            type: 'success'
+                        });
+                    }).catch(function (error) {
+                        if (error.response) {
+                            if (error.response.status === 422) {
+                                for (var index in error.response.data) {
+                                    _this.$notify({
+                                        title: '警告',
+                                        message: error.response.data[index][0],
+                                        type: 'warning'
+                                    });
+                                }
+                            }
+                        } else {
+                            console.log(error);
+                        }
+                    });
+                }
+            });
+        },
+        closeForm: function closeForm(myForm) {
+            this.localforage.removeItem('myFormMarkdown').then(function () {
+                console.log('Key is cleared!');
+            }).catch(function (err) {
+                console.log(err);
+            });
+            this.$refs[myForm].resetFields();
+            this.$router.replace('/posts');
+            console.log('closeForm');
+        },
         getCategories: function getCategories() {
             var _this = this;
             window.axios.get('/category').then(function (response) {
@@ -27669,17 +27729,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.domain = location.protocol + '//' + location.host + location.pathname;
         },
         setMarkdown: function setMarkdown() {
-            //                let _this = this;
-            //                this.localforage.getItem('myFormMarkdown').then(function (value) {
-            //                    //console.log(value);
-            //                    if (value != '' && value != null) {
-            //                        _this.myForm.markdown = JSON.parse(value);
-            //                    }
-            //                }).catch(function (err) {
-            //                    console.log(err);
-            //                });
-        },
-        textComplete: function textComplete() {}
+            var _this = this;
+            this.localforage.getItem('myFormMarkdown').then(function (value) {
+                if (value !== '' && value !== null) {
+                    _this.myForm.markdown = JSON.parse(value);
+                }
+            }).catch(function (err) {
+                console.log(err);
+            });
+        }
     },
     computed: {
         compiledMarkdown: function compiledMarkdown() {
@@ -27709,15 +27767,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         '$route': function $route(to, from) {
             //监听路由改变
-            if (this.$route.params.id == undefined) {
+            if (this.$route.params.id === undefined) {
                 this.$refs['myForm'].resetFields();
-                this.fileList = [];
+                //                    this.fileList = [];
             }
         }
     },
     mounted: function mounted() {
         this.getCategories();
-        this.setDomain();
+        //            this.setDomain();
         this.setMarkdown();
     }
 });
@@ -30456,7 +30514,7 @@ exports.push([module.i, "\n\n\n\n\n\n\n", ""]);
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(5)();
-exports.push([module.i, "\n.pit-common {\n    margin: 20px;\n    width: 60%;\n    min-width: 800px;\n}\n.pit-previews .markdown-previews {\n    border: #ccc 1px dashed;\n    margin-left: 80px;\n    background: #faf5eb;\n    padding: 10px;\n}\n.el-tag {\n    margin-left: 10px;\n    background-color: #8391a5;\n    display: inline-block;\n    padding: 0 5px;\n    height: 24px;\n    line-height: 22px;\n    font-size: 12px;\n    color: #fff;\n    border-radius: 4px;\n    box-sizing: border-box;\n    border: 1px solid transparent;\n    white-space: nowrap;\n}\n.input-new-tag {\n    width: 78px;\n    margin-left: 10px;\n}\n.button-new- tag {\n    margin-left: 10px;\n    height: 24px;\n    line-height: 22px;\n    padding-top: 0;\n    padding-bottom: 0;\n}\n.showPreview img {\n    max-width: 100%;\n}\n.avatar-uploader .el-upload {\n    border: 1px dashed #d9d9d9;\n    border-radius: 6px;\n    cursor: pointer;\n    position: relative;\n    overflow: hidden;\n}\n.avatar-uploader .el-upload:hover {\n    border-color: #20a0ff;\n}\n.avatar-uploader-icon {\n    font-size: 28px;\n    color: #8c939d;\n    width: 350px;\n    height: 150px;\n    line-height: 150px;\n    text-align: center;\n}\n.post-cover {\n    width: 350px;\n    height: 150px;\n    display: block;\n}\n", ""]);
+exports.push([module.i, "\n.pit-common {\n    margin: 20px;\n    width: 60%;\n    min-width: 800px;\n}\n.pit-previews .markdown-previews {\n    border: #ccc 1px dashed;\n    margin-left: 80px;\n    background: #faf5eb;\n    padding: 10px;\n    color: #000;\n}\n.el-tag {\n    margin-left: 10px;\n    background-color: #8391a5;\n    display: inline-block;\n    padding: 0 5px;\n    height: 24px;\n    line-height: 22px;\n    font-size: 12px;\n    color: #fff;\n    border-radius: 4px;\n    box-sizing: border-box;\n    border: 1px solid transparent;\n    white-space: nowrap;\n}\n.input-new-tag {\n    width: 78px;\n    margin-left: 10px;\n}\n.button-new- tag {\n    margin-left: 10px;\n    height: 24px;\n    line-height: 22px;\n    padding-top: 0;\n    padding-bottom: 0;\n}\n.showPreview img {\n    max-width: 100%;\n}\n.avatar-uploader .el-upload {\n    border: 1px dashed #d9d9d9;\n    border-radius: 6px;\n    cursor: pointer;\n    position: relative;\n    overflow: hidden;\n}\n.avatar-uploader .el-upload:hover {\n    border-color: #20a0ff;\n}\n.avatar-uploader-icon {\n    font-size: 28px;\n    color: #8c939d;\n    width: 350px;\n    height: 150px;\n    line-height: 150px;\n    text-align: center;\n}\n.post-cover {\n    width: 350px;\n    height: 150px;\n    display: block;\n}\n", ""]);
 
 /***/ }),
 /* 91 */
@@ -86350,27 +86408,6 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   })], 1), _vm._v(" "), _c('el-form-item', {
     attrs: {
-      "label": "路由",
-      "prop": "route"
-    }
-  }, [_c('el-input', {
-    attrs: {
-      "placeholder": "请输入内容"
-    },
-    model: {
-      value: (_vm.myForm.route),
-      callback: function($$v) {
-        _vm.myForm.route = $$v
-      },
-      expression: "myForm.route"
-    }
-  }, [_c('template', {
-    attrs: {
-      "slot": "prepend"
-    },
-    slot: "prepend"
-  }, [_vm._v(_vm._s(_vm.domain))])], 2)], 1), _vm._v(" "), _c('el-form-item', {
-    attrs: {
       "label": "标签"
     }
   }, [_vm._l((_vm.myForm.tags), function(tag) {
@@ -86452,9 +86489,6 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         minRows: 12
       },
       "rows": _vm.textareaRow
-    },
-    on: {
-      "change": _vm.textComplete
     },
     model: {
       value: (_vm.myForm.markdown),
