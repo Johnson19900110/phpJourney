@@ -126,7 +126,6 @@
                     title: '',
 //                    route: '',
                     tags: [],
-                    content: '',
                     category_id: 0,
                     markdown: ''
                 },
@@ -149,8 +148,48 @@
             }
         },
         created () {
+            if (this.$route.params.id !== undefined) {
+                this.getPost(this.$route.params.id);
+            }
         },
         methods: {
+            getPost: function (id) {
+                let post_id = parseInt(id);
+                if ( post_id <= 0) {
+                    return false;
+                }
+                let _this = this;
+                _this.editFormLoading = true;
+                _this.myFormTitle = '编辑';
+                window.axios.get('/posts/' + post_id).then(function (response) {
+                    let res = response.data;
+                    if (res.status === 0) {
+                        let tags = [];
+                        _this.myForm = res.data;
+                        //tags
+                        if (res.tags.length > 0) {
+                            for (let index in res.tags) {
+                                tags.push(res.tags[index].tags_name);
+                            }
+                            _this.myForm.tags = tags;
+                        }
+                        //thumb
+                        if (res.thumb != '') {
+                            _this.fileList = [{url: res.thumb}]
+                        }
+                        _this.compileMarkdown();
+                    } else {
+                        _this.$message({
+                            message: res.message,
+                            type: 'error'
+                        });
+                    }
+                    _this.editFormLoading = false;
+                }).catch(function (error) {
+                    console.log(error);
+                    _this.editFormLoading = false;
+                });
+            },
             submitMyForm: function (myForm) {
                 let _this = this;
                 _this.$refs[myForm].validate((valid) => {
@@ -163,8 +202,8 @@
                         window.axios.put('/posts/update', _this.myForm).then(function (response) {
                             let res = response.data;
                             _this.$message({
-                                message: res.status === 0 ? '编辑成功' : '编辑失败',
-                                type: res.status
+                                message: res.message,
+                                type: res.status === 0 ? 'success' : 'error',
                             });
                             if (res.status === 0) {
                                 _this.closeForm('myForm');
@@ -176,11 +215,11 @@
                         window.axios.post('/posts', _this.myForm).then(function (response) {
                             let res = response.data;
                             if (res.status === 0) {
-//                                _this.closeForm('myForm');
+                                _this.closeForm('myForm');
                             }
                             _this.$message({
-                                message: res.status === 0 ? '新增成功' : '新增失败',
-                                type: 'success'
+                                message: res.message,
+                                type: res.status === 0 ? 'success' : 'error'
                             });
                         }).catch(function (error) {
                             if (error.response) {
@@ -207,8 +246,7 @@
                     console.log(err);
                 });
                 this.$refs[myForm].resetFields();
-                this.$router.replace('/posts');
-                console.log('closeForm');
+                this.$router.replace('/articles');
             },
             getCategories() {
                 let _this = this;
@@ -226,14 +264,12 @@
             handleClose(tag) {
                 this.myForm.tags.splice(this.myForm.tags.indexOf(tag), 1);
             },
-
             showInput() {
                 this.inputVisible = true;
                 this.$nextTick(_ => {
                     this.$refs.saveTagInput.$refs.input.focus();
                 });
             },
-
             handleInputConfirm() {
                 let inputValue = this.inputValue;
                 if (inputValue) {

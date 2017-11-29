@@ -60,7 +60,7 @@ const routes = [
         name:'文章',
         iconCls: 'fa fa-file-word-o',
         children: [
-            {path: '/article', component: Main, name: '文章管理'},
+            {path: '/articles', component: Main, name: '文章管理'},
             {path: '/article/add', component: post, name: '发布文章'},
             {path: '/article/category', component: Category, name: '分类管理'}
         ]
@@ -94,7 +94,17 @@ const routes = [
         children: [
             { path: '/user', component: UserSetting, name: '用户设置'}
         ]
-    }
+    },
+    {
+        path: '/',
+        component: Index,
+        name: '',
+        leaf: true,
+        hidden: true,
+        children: [
+            { path: '/article/edit/:id', component: post, name: '修改文章'}
+        ]
+    },
 ];
 
 const router = new VueRouter({

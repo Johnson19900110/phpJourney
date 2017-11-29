@@ -24766,7 +24766,7 @@ var routes = [{
     component: __WEBPACK_IMPORTED_MODULE_7__components_main_index_vue___default.a,
     name: '文章',
     iconCls: 'fa fa-file-word-o',
-    children: [{ path: '/article', component: __WEBPACK_IMPORTED_MODULE_8__components_main_main_vue___default.a, name: '文章管理' }, { path: '/article/add', component: __WEBPACK_IMPORTED_MODULE_11__components_post_post_vue___default.a, name: '发布文章' }, { path: '/article/category', component: __WEBPACK_IMPORTED_MODULE_10__components_category_category_vue___default.a, name: '分类管理' }]
+    children: [{ path: '/articles', component: __WEBPACK_IMPORTED_MODULE_8__components_main_main_vue___default.a, name: '文章管理' }, { path: '/article/add', component: __WEBPACK_IMPORTED_MODULE_11__components_post_post_vue___default.a, name: '发布文章' }, { path: '/article/category', component: __WEBPACK_IMPORTED_MODULE_10__components_category_category_vue___default.a, name: '分类管理' }]
 }, {
     path: '/',
     component: __WEBPACK_IMPORTED_MODULE_7__components_main_index_vue___default.a,
@@ -24787,6 +24787,13 @@ var routes = [{
     leaf: true,
     hidden: true,
     children: [{ path: '/user', component: __WEBPACK_IMPORTED_MODULE_9__components_user_userSetting_vue___default.a, name: '用户设置' }]
+}, {
+    path: '/',
+    component: __WEBPACK_IMPORTED_MODULE_7__components_main_index_vue___default.a,
+    name: '',
+    leaf: true,
+    hidden: true,
+    children: [{ path: '/article/edit/:id', component: __WEBPACK_IMPORTED_MODULE_11__components_post_post_vue___default.a, name: '修改文章' }]
 }];
 
 var router = new __WEBPACK_IMPORTED_MODULE_1_vue_router__["a" /* default */]({
@@ -27478,8 +27485,228 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
-/* harmony default export */ __webpack_exports__["default"] = ({});
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            listData: [],
+            category_id: '',
+            categories: [],
+            currentPage: 1,
+            total: 0,
+            pageSize: 10,
+            listLoading: false,
+            checkedAll: [],
+            q: ''
+        };
+    },
+
+    methods: {
+        filterCategory: function filterCategory(value) {
+            this.getData();
+        },
+        searchBtn: function searchBtn(event) {
+            this.getData();
+        },
+        getData: function getData() {
+            var _this = this;
+            _this.listLoading = true;
+            var query = {
+                rows: _this.pageSize,
+                page: _this.currentPage,
+                category_id: _this.category_id,
+                q: _this.q
+            };
+
+            //console.log(query);
+            window.axios.get('/posts', { params: query }).then(function (response) {
+                var res = response.data;
+                if (res.status === 0) {
+                    var data = res.data;
+                    _this.listData = data.data;
+                    _this.total = data.total;
+                } else {
+                    _this.$message({
+                        message: '数据获取失败',
+                        type: 'error',
+                        duration: 3 * 1000
+                    });
+                }
+                _this.listLoading = false;
+            }).catch(function (error) {
+                console.log(error);
+            });
+        },
+        handleSizeChange: function handleSizeChange(val) {
+            //console.log(`每页 ${val} 条`);
+            this.pageSize = val;
+            this.getData();
+        },
+        handleCurrentChange: function handleCurrentChange(val) {
+            this.currentPage = val;
+            this.getData();
+            //console.log(`当前页: ${val}`);
+        },
+
+        handleDistory: function handleDistory(type, row) {
+            var _this = this,
+                idsParam = {};
+            switch (type) {
+                case 'one':
+                    var id = parseInt(row.id);
+                    if (id <= 0) {
+                        _this.$message({
+                            message: '请选择需要删除的数据',
+                            type: 'warning'
+                        });
+                        return false;
+                    }
+                    idsParam = { ids: [id] };
+                    break;
+                case 'multi':
+                    var ids = _this.util.getIdByArr(_this.checkedAll);
+                    if (ids.length <= 0) {
+                        _this.$message({
+                            message: '请选择需要删除的数据',
+                            type: 'warning'
+                        });
+                        return false;
+                    }
+                    idsParam = { ids: ids };
+                    break;
+                default:
+                    break;
+            }
+
+            _this.$confirm('确认删除该记录吗?', '提示', {
+                //type: 'warning'
+            }).then(function () {
+                _this.listLoading = true;
+                window.axios.delete('/posts/destroy', { data: idsParam }).then(function (response) {
+                    var res = response.data;
+                    if (res.status === 0) {
+                        if (type === 'one') {
+                            _this.util.removeByValue(_this.listData, row.id);
+                        } else {
+                            for (var index in _this.checkedAll) {
+                                _this.util.removeByValue(_this.listData, _this.checkedAll[index].id);
+                            }
+                        }
+                    }
+                    _this.$message({
+                        message: res.message,
+                        type: res.status === 0 ? 'success' : 'error'
+                    });
+                    _this.listLoading = false;
+                }).catch(function (error) {
+                    console.log(error);
+                });
+            }).catch(function () {
+                _this.listLoading = false;
+            });
+        },
+        handleSelectionChange: function handleSelectionChange(val) {
+            this.checkedAll = val;
+        },
+
+        getCategories: function getCategories() {
+            var _this = this;
+            window.axios.get('/category', {
+                params: {
+                    rows: 999
+                }
+            }).then(function (response) {
+                var res = response.data;
+                if (res.status === 0) {
+                    var data = res.data.data;
+                    data.splice(0, 0, { id: 0, name: '顶级分类', hidden: true, parent: 0 });
+                    _this.categories = data;
+                } else {
+                    _this.$message({
+                        message: '数据获取失败',
+                        type: 'error'
+                    });
+                }
+            }).catch(function (error) {
+                console.log(error);
+            });
+        }
+    },
+    mounted: function mounted() {
+        this.getCategories();
+        this.getData();
+    }
+});
 
 /***/ }),
 /* 82 */
@@ -27615,7 +27842,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 title: '',
                 //                    route: '',
                 tags: [],
-                content: '',
                 category_id: 0,
                 markdown: ''
             },
@@ -27628,9 +27854,50 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
         };
     },
-    created: function created() {},
+    created: function created() {
+        if (this.$route.params.id !== undefined) {
+            this.getPost(this.$route.params.id);
+        }
+    },
 
     methods: {
+        getPost: function getPost(id) {
+            var post_id = parseInt(id);
+            if (post_id <= 0) {
+                return false;
+            }
+            var _this = this;
+            _this.editFormLoading = true;
+            _this.myFormTitle = '编辑';
+            window.axios.get('/posts/' + post_id).then(function (response) {
+                var res = response.data;
+                if (res.status === 0) {
+                    var tags = [];
+                    _this.myForm = res.data;
+                    //tags
+                    if (res.tags.length > 0) {
+                        for (var index in res.tags) {
+                            tags.push(res.tags[index].tags_name);
+                        }
+                        _this.myForm.tags = tags;
+                    }
+                    //thumb
+                    if (res.thumb != '') {
+                        _this.fileList = [{ url: res.thumb }];
+                    }
+                    _this.compileMarkdown();
+                } else {
+                    _this.$message({
+                        message: res.message,
+                        type: 'error'
+                    });
+                }
+                _this.editFormLoading = false;
+            }).catch(function (error) {
+                console.log(error);
+                _this.editFormLoading = false;
+            });
+        },
         submitMyForm: function submitMyForm(myForm) {
             var _this = this;
             _this.$refs[myForm].validate(function (valid) {
@@ -27643,8 +27910,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     window.axios.put('/posts/update', _this.myForm).then(function (response) {
                         var res = response.data;
                         _this.$message({
-                            message: res.status === 0 ? '编辑成功' : '编辑失败',
-                            type: res.status
+                            message: res.message,
+                            type: res.status === 0 ? 'success' : 'error'
                         });
                         if (res.status === 0) {
                             _this.closeForm('myForm');
@@ -27656,11 +27923,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     window.axios.post('/posts', _this.myForm).then(function (response) {
                         var res = response.data;
                         if (res.status === 0) {
-                            //                                _this.closeForm('myForm');
+                            _this.closeForm('myForm');
                         }
                         _this.$message({
-                            message: res.status === 0 ? '新增成功' : '新增失败',
-                            type: 'success'
+                            message: res.message,
+                            type: res.status === 0 ? 'success' : 'error'
                         });
                     }).catch(function (error) {
                         if (error.response) {
@@ -27687,8 +27954,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 console.log(err);
             });
             this.$refs[myForm].resetFields();
-            this.$router.replace('/posts');
-            console.log('closeForm');
+            this.$router.replace('/articles');
         },
         getCategories: function getCategories() {
             var _this = this;
@@ -28094,7 +28360,7 @@ var utilHelper = {
         return curTime;
     },
     removeByValue: function removeByValue(arr, val) {
-        for (var i = 0; i < arr.length; i++) {
+        for (var i = 0, len = arr.length; i < len; i++) {
             if (arr[i].id == val) {
                 arr.splice(i, 1);
                 break;
@@ -30521,7 +30787,7 @@ exports.push([module.i, "\n.pit-common {\n    margin: 20px;\n    width: 60%;\n  
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(5)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n.posts-action-btn {\n    margin: 15px 0;\n}\n.links {\n    text-decoration: none;\n    color: #1f2d3d;\n}\n", ""]);
 
 /***/ }),
 /* 92 */
@@ -85947,7 +86213,7 @@ var Component = __webpack_require__(6)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/johnson/www/phpJourney/resources/assets/backend/js/App.vue"
+Component.options.__file = "D:\\WWW\\phpJourney\\resources\\assets\\backend\\js\\App.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] App.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -85985,7 +86251,7 @@ var Component = __webpack_require__(6)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/johnson/www/phpJourney/resources/assets/backend/js/components/category/category.vue"
+Component.options.__file = "D:\\WWW\\phpJourney\\resources\\assets\\backend\\js\\components\\category\\category.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] category.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -86023,7 +86289,7 @@ var Component = __webpack_require__(6)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/johnson/www/phpJourney/resources/assets/backend/js/components/main/index.vue"
+Component.options.__file = "D:\\WWW\\phpJourney\\resources\\assets\\backend\\js\\components\\main\\index.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] index.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -86061,7 +86327,7 @@ var Component = __webpack_require__(6)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/johnson/www/phpJourney/resources/assets/backend/js/components/main/main.vue"
+Component.options.__file = "D:\\WWW\\phpJourney\\resources\\assets\\backend\\js\\components\\main\\main.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] main.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -86099,7 +86365,7 @@ var Component = __webpack_require__(6)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/johnson/www/phpJourney/resources/assets/backend/js/components/post/post.vue"
+Component.options.__file = "D:\\WWW\\phpJourney\\resources\\assets\\backend\\js\\components\\post\\post.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] post.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -86137,7 +86403,7 @@ var Component = __webpack_require__(6)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/johnson/www/phpJourney/resources/assets/backend/js/components/user/login.vue"
+Component.options.__file = "D:\\WWW\\phpJourney\\resources\\assets\\backend\\js\\components\\user\\login.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] login.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -86175,7 +86441,7 @@ var Component = __webpack_require__(6)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/johnson/www/phpJourney/resources/assets/backend/js/components/user/userSetting.vue"
+Component.options.__file = "D:\\WWW\\phpJourney\\resources\\assets\\backend\\js\\components\\user\\userSetting.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] userSetting.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -86540,7 +86806,196 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('h1', [_vm._v("Main Page")])
+  return _c('div', {
+    staticClass: "posts-content"
+  }, [_c('div', {
+    staticClass: "posts-action-btn"
+  }, [_c('router-link', {
+    attrs: {
+      "to": "/article/add"
+    }
+  }, [_c('el-button', {
+    attrs: {
+      "type": "primary",
+      "icon": "plus"
+    }
+  }, [_vm._v("新增")])], 1), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "primary",
+      "icon": "delete"
+    },
+    on: {
+      "click": function($event) {
+        _vm.handleDistory('multi', {})
+      }
+    }
+  }, [_vm._v("删除")]), _vm._v(" "), _c('el-select', {
+    attrs: {
+      "clearable": "",
+      "placeholder": "请选择"
+    },
+    on: {
+      "change": _vm.filterCategory
+    },
+    model: {
+      value: (_vm.category_id),
+      callback: function($$v) {
+        _vm.category_id = $$v
+      },
+      expression: "category_id"
+    }
+  }, _vm._l((_vm.categories), function(item) {
+    return _c('el-option', {
+      attrs: {
+        "label": item.name,
+        "value": item.id
+      }
+    })
+  })), _vm._v(" "), _c('el-input', {
+    staticStyle: {
+      "width": "200px"
+    },
+    attrs: {
+      "placeholder": "请输入内容",
+      "icon": "search",
+      "on-icon-click": _vm.searchBtn
+    },
+    model: {
+      value: (_vm.q),
+      callback: function($$v) {
+        _vm.q = $$v
+      },
+      expression: "q"
+    }
+  })], 1), _vm._v(" "), [_c('el-table', {
+    directives: [{
+      name: "loading",
+      rawName: "v-loading",
+      value: (_vm.listLoading),
+      expression: "listLoading"
+    }],
+    staticStyle: {
+      "width": "100%"
+    },
+    attrs: {
+      "data": _vm.listData
+    },
+    on: {
+      "selection-change": _vm.handleSelectionChange
+    }
+  }, [_c('el-table-column', {
+    attrs: {
+      "type": "selection",
+      "width": "55"
+    }
+  }), _vm._v(" "), _c('el-table-column', {
+    attrs: {
+      "sortable": "",
+      "label": "标题",
+      "min-width": "500"
+    },
+    scopedSlots: _vm._u([{
+      key: "default",
+      fn: function(scope) {
+        return [_c('router-link', {
+          staticClass: "links",
+          attrs: {
+            "to": {
+              path: '/article/edit/' + scope.row.id
+            }
+          }
+        }, [_vm._v(_vm._s(scope.row.title))])]
+      }
+    }])
+  }), _vm._v(" "), _c('el-table-column', {
+    attrs: {
+      "label": "分类",
+      "width": "200"
+    },
+    scopedSlots: _vm._u([{
+      key: "default",
+      fn: function(scope) {
+        return [_vm._l((_vm.categories), function(category) {
+          return [(category.id == scope.row.category_id) ? _c('span', [_vm._v(_vm._s(category.name))]) : _vm._e()]
+        })]
+      }
+    }])
+  }), _vm._v(" "), _c('el-table-column', {
+    attrs: {
+      "sortable": "",
+      "label": "标签",
+      "width": "400"
+    },
+    scopedSlots: _vm._u([{
+      key: "default",
+      fn: function(scope) {
+        return _vm._l((scope.row.tags), function(tag) {
+          return _c('el-tag', {
+            attrs: {
+              "type": "primary"
+            }
+          }, [_vm._v("\n                        " + _vm._s(tag.tags_name) + "\n                    ")])
+        })
+      }
+    }])
+  }), _vm._v(" "), _c('el-table-column', {
+    attrs: {
+      "prop": "created_at",
+      "sortable": "",
+      "label": "日期",
+      "width": "250"
+    }
+  }), _vm._v(" "), _c('el-table-column', {
+    attrs: {
+      "context": _vm._self,
+      "label": "操作",
+      "width": "150"
+    },
+    inlineTemplate: {
+      render: function() {
+        var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+          return _c('span', {
+            staticClass: "fr"
+          }, [_c('router-link', {
+            attrs: {
+              "to": {
+                path: '/article/edit/' + _vm.row.id
+              }
+            }
+          }, [_c('el-button', {
+            attrs: {
+              "size": "small",
+              "icon": "edit"
+            }
+          })], 1), _vm._v(" "), _c('el-button', {
+            attrs: {
+              "type": "danger",
+              "size": "small",
+              "icon": "delete"
+            },
+            on: {
+              "click": function($event) {
+                _vm.handleDistory('one', _vm.row)
+              }
+            }
+          })], 1)
+        
+      },
+      staticRenderFns: []
+    }
+  })], 1)], _vm._v(" "), _c('el-pagination', {
+    attrs: {
+      "current-page": _vm.currentPage,
+      "page-sizes": [10, 20, 50, 100, 200],
+      "page-size": _vm.pageSize,
+      "layout": "sizes, prev, pager, next",
+      "total": _vm.total
+    },
+    on: {
+      "size-change": _vm.handleSizeChange,
+      "current-change": _vm.handleCurrentChange
+    }
+  })], 2)
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
