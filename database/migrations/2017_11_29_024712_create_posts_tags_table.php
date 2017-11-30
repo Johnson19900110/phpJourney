@@ -13,11 +13,14 @@ class CreatePostsTagsTable extends Migration
      */
     public function up()
     {
-        Schema::create('posts_tags', function (Blueprint $table) {
-            $table->integer('posts_id');
-            $table->integer('tags_id');
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('posts_tags')) {
+            //
+            Schema::create('posts_tags', function (Blueprint $table) {
+                $table->integer('posts_id');
+                $table->integer('tags_id');
+            });
+        }
+
     }
 
     /**

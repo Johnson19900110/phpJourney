@@ -19,7 +19,7 @@
             <el-table :data="listData" v-loading="listLoading" style="width: 100%"
                       @selection-change="handleSelectionChange">
                 <el-table-column type="selection" width="55"></el-table-column>
-                <el-table-column sortable label="标题" min-width="500">
+                <el-table-column sortable label="标题" min-width="200">
                     <template scope="scope">
                         <router-link :to="{ path: '/article/edit/'+ scope.row.id}" class="links">{{ scope.row.title }}</router-link>
                     </template>
@@ -31,7 +31,7 @@
                         </template>
                     </template>
                 </el-table-column>
-                <el-table-column sortable label="标签" width="400">
+                <el-table-column sortable label="标签" min-width="200">
                     <template scope="scope">
                         <el-tag v-for="tag in scope.row.tags" type="primary">
                             {{tag.tags_name}}

@@ -209,7 +209,48 @@ class PostController extends Controller
         //
         $id = $request->input('id')+0;
 
-        $post = Post::find($id);
+        try {
+            $post = Post::find($id);
+            $post->title = $request->input('title');
+            $post->category_id = $request->input('category_id');
+            $post->markdown = $marksown = $request->input('markdown');
+            $post->content = (new \Parsedown())->text($marksown);
+
+            $tags = $request->input('tags', []);
+            DB::transaction(function () use ($post, $tags) {
+                $post->update();
+                PostsTag::where('posts_id', $post->id)->delete();
+                if(!empty($tags)) {
+                    foreach ($tags as $tag) {
+                        if(!$tag_id = Tag::where('tags_flag', strtolower($tag))->value('id')) {
+                            $tag_id = Tag::insertGetId(array(
+                                'tags_name' => $tag,
+                                'tags_flag' => strtolower($tag),
+                                'created_at' => date('Y-m-d H:i:s'),
+                                'updated_at' => date('Y-m-d H:i:s'),
+                            ));
+                        }
+
+                        PostsTag::insert(array(
+                            'posts_id' => $post->id,
+                            'tags_id' => $tag_id,
+                        ));
+                    }
+                }
+            });
+
+            return response()->json(array(
+                'status' => 0,
+                'message' => '更新成功',
+            ));
+        }catch (\Exception $exception) {
+            Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
+
+            return response()->json(array(
+                'status' => 1,
+                'message' => '更新失败',
+            ));
+        }
     }
 
     /**

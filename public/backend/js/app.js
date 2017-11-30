@@ -86213,7 +86213,7 @@ var Component = __webpack_require__(6)(
   /* cssModules */
   null
 )
-Component.options.__file = "D:\\WWW\\phpJourney\\resources\\assets\\backend\\js\\App.vue"
+Component.options.__file = "/Users/johnson/www/phpJourney/resources/assets/backend/js/App.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] App.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -86251,7 +86251,7 @@ var Component = __webpack_require__(6)(
   /* cssModules */
   null
 )
-Component.options.__file = "D:\\WWW\\phpJourney\\resources\\assets\\backend\\js\\components\\category\\category.vue"
+Component.options.__file = "/Users/johnson/www/phpJourney/resources/assets/backend/js/components/category/category.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] category.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -86289,7 +86289,7 @@ var Component = __webpack_require__(6)(
   /* cssModules */
   null
 )
-Component.options.__file = "D:\\WWW\\phpJourney\\resources\\assets\\backend\\js\\components\\main\\index.vue"
+Component.options.__file = "/Users/johnson/www/phpJourney/resources/assets/backend/js/components/main/index.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] index.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -86327,7 +86327,7 @@ var Component = __webpack_require__(6)(
   /* cssModules */
   null
 )
-Component.options.__file = "D:\\WWW\\phpJourney\\resources\\assets\\backend\\js\\components\\main\\main.vue"
+Component.options.__file = "/Users/johnson/www/phpJourney/resources/assets/backend/js/components/main/main.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] main.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -86365,7 +86365,7 @@ var Component = __webpack_require__(6)(
   /* cssModules */
   null
 )
-Component.options.__file = "D:\\WWW\\phpJourney\\resources\\assets\\backend\\js\\components\\post\\post.vue"
+Component.options.__file = "/Users/johnson/www/phpJourney/resources/assets/backend/js/components/post/post.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] post.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -86403,7 +86403,7 @@ var Component = __webpack_require__(6)(
   /* cssModules */
   null
 )
-Component.options.__file = "D:\\WWW\\phpJourney\\resources\\assets\\backend\\js\\components\\user\\login.vue"
+Component.options.__file = "/Users/johnson/www/phpJourney/resources/assets/backend/js/components/user/login.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] login.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -86441,7 +86441,7 @@ var Component = __webpack_require__(6)(
   /* cssModules */
   null
 )
-Component.options.__file = "D:\\WWW\\phpJourney\\resources\\assets\\backend\\js\\components\\user\\userSetting.vue"
+Component.options.__file = "/Users/johnson/www/phpJourney/resources/assets/backend/js/components/user/userSetting.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] userSetting.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -86892,7 +86892,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "sortable": "",
       "label": "标题",
-      "min-width": "500"
+      "min-width": "200"
     },
     scopedSlots: _vm._u([{
       key: "default",
@@ -86924,7 +86924,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "sortable": "",
       "label": "标签",
-      "width": "400"
+      "min-width": "200"
     },
     scopedSlots: _vm._u([{
       key: "default",
