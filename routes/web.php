@@ -10,17 +10,19 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get('/', function () {
-    return view('index');
-});
+/**
+ * 前台
+ */
 
 Route::group(['namespace' => 'App'], function () {
+    Route::get('/', 'HomeController@index')->name('home');
+    Route::get('/post/{id}', 'HomeController@post')->name('post');
+    Route::get('/tags/{id}', 'HomeController@tags')->name('tags');
 });
 
-/*
+/**
  * Backend
- * */
+ */
 Route::group(['prefix' => 'back', 'namespace' => 'Backend'], function () {
    Route::get('/', 'IndexController@index')->name('admin');
    Route::post('/auth/login', 'AuthController@authenticate');

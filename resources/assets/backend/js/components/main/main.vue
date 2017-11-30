@@ -26,9 +26,7 @@
                 </el-table-column>
                 <el-table-column label="分类" width="200">
                     <template scope="scope">
-                        <template v-for="category in categories">
-                            <span v-if="category.id == scope.row.category_id">{{ category.name}}</span>
-                        </template>
+                        <span>{{ scope.row.categories.name}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column sortable label="标签" min-width="200">
