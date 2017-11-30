@@ -17,44 +17,16 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(Request $request, $page = 1)
     {
         //
         try {
             $rows = $request->input('rows', 10);
-            $page = $request->input('page', 1);
-
-            $column = [];
-            if( $request->filled('category_id') ) {
-                $column[] = ['category_id', '=', $request->input('category_id')+0];
-            }
-
-            if( $request->filled('q') ) {
-                $column[] = ['title', 'like', '%' . $request->input('q') . '%'];
-            }
-
-            if(count($column) > 0) {
-                $posts = Post::where($column)->paginate($rows, ['*'], $page);
-            }else {
-                $posts = Post::paginate($rows, ['*'], $page);
-            }
-
+            $posts = Post::ofCategory($request->input('category_id')+0)->ofTitle($request->input('q'))->paginate($rows);
             foreach ($posts as $post) {
-                $tags_ids = PostsTag::where('posts_id', $post->id)->get();
-
-                if(count($tags_ids)) {
-                    $ids = array();
-                    foreach ($tags_ids as $tags_id) {
-                        $ids[] = $tags_id->tags_id;
-                    }
-
-                    $post->tags = Tag::whereIn('id', $ids)->get();
-                }else {
-                    $post->tags = [];
-                }
-
+                $post->tags;
+                $post->categories;
             }
-
             return response()->json(array(
                 'status' => 0,
                 'data' => $posts

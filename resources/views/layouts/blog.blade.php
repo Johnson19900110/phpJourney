@@ -12,17 +12,17 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/app.css') }}?time={{ time() }}" rel="stylesheet">
 
     <!-- iconMoon -->
-    <link rel="stylesheet" href="{{ asset('icomoon/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('icomoon/style.css') }}?time={{ time() }}">
 
     <!-- Script -->
-    <script src="{{ asset('js/vue/vue.js') }}"></script>
-    <script src="{{ asset('js/vue/axios.min.js') }}"></script>
+    {{--<script src="{{ asset('js/vue/vue.js') }}"></script>--}}
+    {{--<script src="{{ asset('js/vue/axios.min.js') }}"></script>--}}
 
     <style>
-        body,ul,ol,li,p,h1,h2,h3,h4,h5,h6,form,fieldset,table,td,img,div{margin:0;padding:0;border:0;}
+        /*body,ul,ol,li,p,h1,h2,h3,h4,h5,h6,form,fieldset,table,td,img,div{margin:0;padding:0;border:0;}*/
         body{background:#fff;color:#333;font-size:12px; font-family:"SimSun","宋体","Arial Narrow";}
 
         ul,ol{list-style-type:none;}
@@ -130,7 +130,7 @@
 
 <!-- Scripts -->
 @section('vue-js')
-    <script src="{{ asset('js/app.js') }}"></script>
+    <script src="{{ asset('js/app.js') }}?time={{ time() }}"></script>
 @show
 </body>
 </html>
