@@ -25,6 +25,14 @@
         .tags {
             margin-top: 10px;
         }
+        .title a {
+            color: #000;
+            text-decoration: none;
+        }
+        
+        .title a:hover {
+            text-decoration: none;
+        }
     </style>
 
 @endsection
@@ -33,7 +41,7 @@
     <ul>
         @foreach($posts as $post)
             <li>
-                <h3>{{ $post->title }}</h3>
+                <h3 class="title"><a href="{{ route('post', $post->id) }}">{{ $post->title }}</a></h3>
                 <div class="info">
                     <span class="icon-calendar"></span><span class="calendar">{{ date('d F,Y', strtotime($post->created_at)) }}</span>
                     <span class="icon-eye"></span><span class="views">{{ $post->views }} views</span>

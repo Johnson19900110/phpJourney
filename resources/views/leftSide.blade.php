@@ -13,10 +13,7 @@
 
     <ul>
         <li><a href="{{ config('app.url') }}">首页</a></li>
-        <li><a href="">前端开发</a></li>
-        <li><a href="">PHP开发</a></li>
-        <li><a href="">Linux</a></li>
-        <li><a href="">Swoole</a></li>
+        @include('widgets.navigation')
     </ul>
 
     <div class="clearfix"></div>

@@ -5466,7 +5466,7 @@ var namespaceMap = {
 
 var isHTMLTag = makeMap(
   'html,body,base,head,link,meta,style,title,' +
-  'address,article,aside,footer,header,h1,h2,h3,h4,h5,h6,hgroup,nav,section,' +
+  'address,article,aside,footer,header,h1,h2,h3,h4,h5,h6,hgroup,widgets,section,' +
   'div,dd,dl,dt,figcaption,figure,picture,hr,img,li,main,ol,p,pre,ul,' +
   'a,b,abbr,bdi,bdo,br,cite,code,data,dfn,em,i,kbd,mark,q,rp,rt,rtc,ruby,' +
   's,samp,small,span,strong,sub,sup,time,u,var,wbr,area,audio,map,track,video,' +
@@ -23996,7 +23996,7 @@ if (typeof jQuery === 'undefined') {
     clearMenus()
 
     if (!isActive) {
-      if ('ontouchstart' in document.documentElement && !$parent.closest('.navbar-nav').length) {
+      if ('ontouchstart' in document.documentElement && !$parent.closest('.navbar-widgets').length) {
         // if mobile we use a backdrop because click events don't delegate
         $(document.createElement('div'))
           .addClass('dropdown-backdrop')
@@ -25083,7 +25083,7 @@ if (typeof jQuery === 'undefined') {
     this.$body          = $(document.body)
     this.$scrollElement = $(element).is(document.body) ? $(window) : $(element)
     this.options        = $.extend({}, ScrollSpy.DEFAULTS, options)
-    this.selector       = (this.options.target || '') + ' .nav li > a'
+    this.selector       = (this.options.target || '') + ' .widgets li > a'
     this.offsets        = []
     this.targets        = []
     this.activeTarget   = null
@@ -67852,7 +67852,7 @@ module.exports =
 	        'div',
 	        { 'class': 'el-tabs__header' },
 	        [newButton, h(
-	          'tab-nav',
+	          'tab-widgets',
 	          navData,
 	          []
 	        )]
