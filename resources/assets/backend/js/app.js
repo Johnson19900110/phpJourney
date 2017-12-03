@@ -33,10 +33,13 @@ Vue.prototype.localforage = localforage;
 import App from './App.vue';
 import Login from './components/user/login.vue';
 import Index from './components/main/index.vue';
-import Main from  './components/main/main.vue';
+import Posts from  './components/post/Posts.vue';
 import UserSetting from './components/user/userSetting.vue';
 import Category from './components/category/category.vue';
-import post from './components/post/post.vue'
+import post from './components/post/post.vue';
+import Comment from './components/post/comment.vue';
+import Dashboard from './components/main/dashboard.vue';
+import Trash from './components/post/trash.vue';
 
 const routes = [
     {
@@ -51,7 +54,7 @@ const routes = [
         iconCls: 'fa fa-home',
         leaf: true,
         children: [
-            {path: '/index', component: Main, name: '仪盘表'}
+            {path: '/index', component: Dashboard, name: '仪盘表'}
         ]
     },
     {
@@ -60,9 +63,10 @@ const routes = [
         name:'文章',
         iconCls: 'fa fa-file-word-o',
         children: [
-            {path: '/articles', component: Main, name: '文章管理'},
+            {path: '/articles', component: Posts, name: '文章管理'},
             {path: '/article/add', component: post, name: '发布文章'},
-            {path: '/article/category', component: Category, name: '分类管理'}
+            {path: '/article/category', component: Category, name: '分类管理'},
+            {path: '/trash', component: Trash, name: '回收站'},
         ]
     },
     {
@@ -71,8 +75,8 @@ const routes = [
         name:'拓展',
         iconCls: 'fa fa-external-link-square',
         children: [
-            {path: '/navigation', component: Main, name: '导航管理'},
-            {path: '/comment', component: Main, name: '评论管理'}
+            // {path: '/navigation', component: Main, name: '导航管理'},
+            {path: '/comment', component: Comment, name: '评论管理'}
         ]
     },
     {
@@ -82,7 +86,7 @@ const routes = [
         iconCls: 'fa fa-cog',
         leaf: true,
         children: [
-            {path: '/setting', component: Main, name: '设置'}
+            {path: '/setting', component: UserSetting, name: '设置'}
         ]
     },
     {

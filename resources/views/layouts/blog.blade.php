@@ -55,6 +55,11 @@
             background-size: 100% 100%;
         }
 
+        .leftSide ul, .leftSide li {
+            padding: 0;
+            margin: 0;
+        }
+
         .leftSide .avatar-wrapper {
             margin-top: 100px;
             text-align: center;
@@ -71,7 +76,7 @@
 
         .leftSide .avatar-wrapper .description {
             font-size: 15px;
-            color: #ccc;
+            color: #FDA;
             margin-top: 20px;
         }
 
@@ -83,7 +88,7 @@
 
         .leftSide ul li {
             float: left;
-            padding: 0 15px;
+            padding: 0 10px;
         }
 
         .leftSide ul li a {

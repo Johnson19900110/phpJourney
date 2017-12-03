@@ -19,6 +19,7 @@ Route::group(['namespace' => 'App'], function () {
     Route::get('/post/{id}', 'HomeController@post')->name('post');
     Route::get('/tags/{flag}', 'HomeController@tags')->name('tags');
     Route::get('/category/{id}', 'HomeController@categories')->name('category');
+    Route::resource('/comments', 'CommentsController');
 });
 
 /**
@@ -36,4 +37,6 @@ Route::group(['middleware' => 'auth', 'prefix' => 'back', 'namespace' => 'Backen
     Route::resource('/users', 'UserController');
     Route::resource('/category', 'CategoryController');
     Route::resource('/posts', 'PostController');
+    Route::resource('/comment', 'CommentController');
+    Route::post('/dashboard', 'IndexController@statistical');
 });

@@ -171,12 +171,8 @@
                             for (let index in res.tags) {
                                 tags.push(res.tags[index].tags_name);
                             }
-                            _this.myForm.tags = tags;
                         }
-                        //thumb
-                        if (res.thumb != '') {
-                            _this.fileList = [{url: res.thumb}]
-                        }
+                        _this.myForm.tags = tags;
                         _this.compileMarkdown();
                     } else {
                         _this.$message({
@@ -271,6 +267,7 @@
                 });
             },
             handleInputConfirm() {
+                console.log(this.myForm);
                 let inputValue = this.inputValue;
                 if (inputValue) {
                     this.myForm.tags.push(inputValue);

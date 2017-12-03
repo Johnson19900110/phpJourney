@@ -46,7 +46,7 @@
                 @endforeach
             @endif
         </div>
-        <div id="comment">
+        <div>
             <comment post="{{ $post->id or 0 }}"></comment>
         </div>
     </div>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\App;
 
 use App\Post;
 use App\Tag;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Log;
@@ -79,6 +80,22 @@ class HomeController extends Controller
 
     public function categories($category_id)
     {
+        try {
+            $posts = Post::where('category_id', $category_id+0)->paginate(15);
+
+
+            if(empty($posts->items())) {
+                throw new \Exception('抱歉，页面找不到了', 404);
+            }
+
+            return view('index', array(
+                'posts' => $posts
+            ));
+        }catch (\Exception $exception) {
+            Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
+
+            abort($exception->getCode(), $exception->getMessage());
+        }
 
     }
 }

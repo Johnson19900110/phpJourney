@@ -90,8 +90,8 @@ class PostController extends Controller
                         }
 
                         PostsTag::insert(array(
-                            'posts_id' => $post_id,
-                            'tags_id' => $tag_id,
+                            'post_id' => $post_id,
+                            'tag_id' => $tag_id,
                         ));
                     }
                 }
@@ -132,7 +132,7 @@ class PostController extends Controller
         try{
             $post = Post::find($id);
 
-            $tags_ids = PostsTag::where('posts_id', $post->id)->get();
+            $tags_ids = PostsTag::where('post_id', $post->id)->get();
 
             if(count($tags_ids)) {
                 $ids = array();
@@ -151,6 +151,8 @@ class PostController extends Controller
                 'tags' => $tags,
             ));
         }catch (\Exception $exception) {
+            Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
+
             return response()->json(array(
                 'status' => 1,
                 'message' => '数据获取失败',
@@ -189,9 +191,10 @@ class PostController extends Controller
             $post->content = (new \Parsedown())->text($marksown);
 
             $tags = $request->input('tags', []);
+
             DB::transaction(function () use ($post, $tags) {
                 $post->update();
-                PostsTag::where('posts_id', $post->id)->delete();
+                PostsTag::where('post_id', $post->id)->delete();
                 if(!empty($tags)) {
                     foreach ($tags as $tag) {
                         if(!$tag_id = Tag::where('tags_flag', strtolower($tag))->value('id')) {
@@ -204,8 +207,8 @@ class PostController extends Controller
                         }
 
                         PostsTag::insert(array(
-                            'posts_id' => $post->id,
-                            'tags_id' => $tag_id,
+                            'post_id' => $post->id,
+                            'tag_id' => $tag_id,
                         ));
                     }
                 }
@@ -247,7 +250,7 @@ class PostController extends Controller
         try {
             DB::transaction(function () use($ids) {
                 Post::destroy($ids);
-                PostsTag::whereIn('posts_id', $ids)->delete();
+                PostsTag::whereIn('post_id', $ids)->delete();
             });
 
             return response()->json(array(

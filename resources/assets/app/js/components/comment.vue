@@ -28,7 +28,7 @@
                                   maxlength="65525" aria-required="true" required="required"></textarea>
                     </p>
                     <p class="form-submit">
-                        <button @click="comment" type="button" id="submit" class="submit" v-html="sublimtText"></button>
+                        <button @click="comment" type="button" id="submit" class="submit" v-html="submitText"></button>
                     </p>
                 </form>
                 <!--<div class="commentPreview" v-html="commentPreview"></div>-->
@@ -41,14 +41,13 @@
                 <li class="comment" v-for="comment in comments">
                     <article class="comment-body comment-body-parent">
                         <div class="comment-author">
-                            <a :name="comment.md5"></a>
-                            <img :src="'https://cn.gravatar.com/avatar/'+comment.md5+'?d=identicon&s=60'"
+                            <img src="/images/avatar.jpg"
                                  class="avatar avatar-96" height="96" width="96">
                         </div>
                         <div class="comment-content">
                             <div class="comment-entry">
                                 <span class="name author" itemprop="author">
-                                    <a :href="comment.url" target="_blank">{{  comment.name }}：</a>
+                                    <span>{{  comment.name }}：</span>
                                 </span>
                                 <section v-html="comment.content"></section>
                             </div>
@@ -65,6 +64,98 @@
         </div>
     </div>
 </template>
+<script type="text/ecmascript-6">
+    export default{
+        data: function () {
+            return {
+                loading: false,
+                submitText: '发表评论',
+                comments: [],
+                myForm: {
+                    post_id: this.post,
+                    parent_id: 0,
+                    name: '',
+                    email: '',
+                    markdown: ''
+                }
+            }
+        },
+        props: ['post'],
+        computed: {
+            /*commentPreview: function () {
+                return marked(this.myForm.markdown, {sanitize: true});
+            }*/
+        },
+        methods: {
+            comment: function () {
+                let _this = this;
+                for (let key in _this.myForm) {
+                    if (_this.myForm[key] === '') {
+                        _this.$refs[key].focus();
+                        return false;
+                    }
+                }
+                _this.submitText = '提交中...';
+                window.axios.post('/comments', _this.myForm).then(function (response) {
+                    let res = response.data;
+                    if (res.status === 0) {
+                        _this.comments.push(res.comment);
+                        _this.myForm = {
+                            post_id: _this.post,
+                            name: '',
+                            email: '',
+                            markdown: ''
+                        };
+                        console.log(_this.myForm);
+                    }
+                    _this.submitText = '发表评论';
+                }).catch(function (error) {
+                    let res = error.response;
+                    if (res) {
+                        if (res.status === 422) {
+                            for (let index in res.data.errors) {
+                                console.log(_this.$message);
+                                _this.$message({
+                                    title: '警告',
+                                    message: res.data.errors[index][0],
+                                    type: 'warning'
+                                });
+                                alert(res.data.errors[index][0]);
+                            }
+                        }
+                    } else {
+                        console.log(error);
+                    }
+                    _this.submitText = '发表评论';
+
+                });
+                return false;
+            },
+            getData: function () {
+                var _this = this;
+                window.axios.get('/comments/' + _this.post).then(function (response) {
+                    console.log(response);
+                    let res = response.data;
+                    if(res.status === 0) {
+                        console.log(res.comments);
+                        _this.comments = res.comments;
+                    }
+
+                }).catch(function (error) {
+                    console.log(error);
+                });
+            },
+            reply: function (name) {
+                var at = '@' + name + ' ';
+                this.myForm.markdown += at;
+                return false;
+            }
+        },
+        mounted: function () {
+            this.getData();
+        }
+    }
+</script>
 <style type="text/css">
     #respond {
         color: #888;
@@ -360,75 +451,3 @@
         padding: 12px 25px;
     }
 </style>
-<script type="text/ecmascript-6">
-    export default{
-        data: function () {
-            return {
-                loading: false,
-                sublimtText: '发表评论',
-                sublimtLoading: false,
-                comments: [],
-                myForm: {
-                    post_id: this.post,
-                    name: '',
-                    email: '',
-                    url: '',
-                    markdown: ''
-                }
-            }
-        },
-        props: ['post'],
-        computed: {
-            /*commentPreview: function () {
-                return marked(this.myForm.markdown, {sanitize: true});
-            }*/
-        },
-        methods: {
-            comment: function (event) {
-                var _this = this;
-                for (var key in _this.myForm) {
-                    if (_this.myForm[key] == '') {
-                        _this.$refs[key].focus();
-                        return false;
-                        break;
-                    }
-                }
-                _this.sublimtText = '<img class="sublimt-loading" src="/assets/images/loading.svg" alt=""> 提交中...';
-                window.axios.post('/comment', _this.myForm).then(function (response) {
-                    if (response.data.status == 'success') {
-                        _this.comments.splice(-1, 0, _this.myForm);
-                        _this.myForm = {
-                            post_id: this.post,
-                            name: '',
-                            email: '',
-                            url: '',
-                            markdown: ''
-                        };
-                    }
-                    _this.sublimtText = '发表评论';
-                }).catch(function (error) {
-                    console.log(error);
-                    _this.sublimtText = '发表评论';
-                });
-                console.log('end');
-                return false;
-            },
-            getData: function () {
-                var _this = this;
-                window.axios.get('/comment/' + _this.post).then(function (response) {
-                    _this.comments = response.data;
-                }).catch(function (error) {
-                    console.log(error);
-                });
-            },
-            reply: function (name) {
-                var at = '@' + name + ' ';
-                this.myForm.markdown += at;
-                return false;
-            }
-        },
-        mounted: function () {
-//            this.getData();
-        }
-    }
-</script>

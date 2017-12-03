@@ -4,10 +4,10 @@
             <img src="{{ asset('images/avatar.jpg') }}" alt="" width="125" height="100">
         </div>
         <div class="nickname">
-            <h1>This is Johnson-枫</h1>
+            <h1>Johnson-枫</h1>
         </div>
         <div class="description">
-            <p>Hello,Everyone!My Name is Johnson,a PHPer.My favorite sports is basketball and also do best in it!</p>
+            <p>Somebody has to win, So why not be me!</p>
         </div>
     </div>
 

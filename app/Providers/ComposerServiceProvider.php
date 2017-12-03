@@ -9,7 +9,6 @@
 namespace App\Providers;
 
 
-use App\Http\ViewComposers\Navigation;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -17,7 +16,7 @@ class ComposerServiceProvider extends ServiceProvider
 {
 
     public function boot(){
-        View::composer('app.widgets.navigation',Navigation::class);
+        View::composer('widgets.navigation', 'App\Http\ViewComposers\Navigation');
     }
 
     public function register(){

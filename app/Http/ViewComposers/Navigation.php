@@ -24,6 +24,6 @@ class Navigation
     {
         $categories = Category::get();
 
-        $view->with(compact($categories));
+        $view->with('categories', ($categories));
     }
 }
