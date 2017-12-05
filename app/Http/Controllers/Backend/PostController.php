@@ -132,23 +132,10 @@ class PostController extends Controller
         try{
             $post = Post::find($id);
 
-            $tags_ids = PostsTag::where('post_id', $post->id)->get();
-
-            if(count($tags_ids)) {
-                $ids = array();
-                foreach ($tags_ids as $tags_id) {
-                    $ids[] = $tags_id->tags_id;
-                }
-
-                $tags = Tag::whereIn('id', $ids)->get();
-            }else {
-                $tags = [];
-            }
-
             return response()->json(array(
                 'status' => 0,
                 'data' => $post,
-                'tags' => $tags,
+                'tags' => $post->tags,
             ));
         }catch (\Exception $exception) {
             Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
