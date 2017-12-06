@@ -4,7 +4,6 @@
     <style>
         .rightSide ul li {
             padding: 50px 5px;
-            border-bottom: 1px solid red;
         }
 
         .rightSide .info{
@@ -39,8 +38,9 @@
 
 @section('rightSide')
     <ul>
-        @foreach($posts as $post)
-            <li>
+
+        @foreach($posts->data as $post)
+            <li style="border-bottom: 1px solid #c4c4c4;">
                 <h3 class="title"><a href="{{ route('post', $post->id) }}">{{ $post->title }}</a></h3>
                 <div class="info">
                     <span class="icon-calendar"></span><span class="calendar">{{ date('d F,Y', strtotime($post->created_at)) }}</span>
@@ -56,5 +56,5 @@
             </li>
         @endforeach
     </ul>
-    {{ $posts->links() }}
+    {!! $posts->links !!}
 @endsection

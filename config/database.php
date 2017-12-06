@@ -117,6 +117,24 @@ return [
             ]
         ],
 
+        'categories' => [
+            'host' => env('REDIS_HOST', '127.0.0.1'),
+            'port' => env('REDIS_PORT', 6379),
+            'database' => 1,
+            'parameters'=>[
+                'password'=>env('REDIS_PASSWORD', null)
+            ]
+        ],
+
+        'posts' => [
+            'host' => env('REDIS_HOST', '127.0.0.1'),
+            'port' => env('REDIS_PORT', 6379),
+            'database' => 2,
+            'parameters'=>[
+                'password'=>env('REDIS_PASSWORD', null)
+            ]
+        ],
+
     ],
 
 ];

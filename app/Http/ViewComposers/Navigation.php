@@ -10,6 +10,7 @@ namespace App\Http\ViewComposers;
 
 
 use App\Category;
+use Illuminate\Support\Facades\Redis;
 use Illuminate\View\View;
 
 class Navigation
@@ -22,7 +23,15 @@ class Navigation
      */
     public function compose(View $view)
     {
-        $categories = Category::get();
+        $redis_key = 'category';
+        $redis = Redis::connection('categories');
+
+        if($redis->exists($redis_key)) {
+            $categories = json_decode($redis->get($redis_key));
+        }else {
+            $categories = Category::get();
+            $redis->set($redis_key, json_encode($categories));
+        }
 
         $view->with('categories', ($categories));
     }
