@@ -50,10 +50,15 @@ class Post extends Model
      */
     public function scopeOfTitle($query, $title)
     {
-        if(!empty($q)) {
+        if(!empty($title)) {
             return $query->where('title', 'like', '%' . $title . '%');
         }
 
         return $query;
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class, 'post_id');
     }
 }

@@ -1,10 +1,8 @@
 <template>
     <div class="posts-content">
         <div class="posts-action-btn">
-            <router-link to="/article/add">
-                <el-button type="primary" icon="plus">新增</el-button>
-            </router-link>
-            <el-button type="primary" @click="handleDistory('multi',{})" icon="delete">删除</el-button>
+            <el-button type="success" @click="handleRestore('multi',{})" icon="upload2">恢复</el-button>
+            <el-button type="primary" @click="handleDestroy('multi',{})" icon="delete">删除</el-button>
             <el-select v-model="category_id" clearable @change="filterCategory" placeholder="请选择">
                 <el-option
                         v-for="item in categories"
@@ -40,10 +38,8 @@
                                  width="250"></el-table-column>
                 <el-table-column inline-template :context="_self" label="操作" width="150">
                     <span class="fr">
-                        <router-link :to="{ path: '/article/edit/'+ row.id}">
-                            <el-button size="small" icon="edit"></el-button>
-                        </router-link>
-                        <el-button type="danger" size="small" icon="delete" @click="handleDistory('one',row)"></el-button>
+                        <el-button size="small" @click="handleRestore('one',row)"><i class="fa fa-retweet" aria-hidden="true"></i></el-button>
+                        <el-button type="danger" size="small" icon="delete" @click="handleDestroy('one',row)"></el-button>
                     </span>
                 </el-table-column>
             </el-table>
@@ -86,6 +82,63 @@
             }
         },
         methods: {
+            handleRestore(type, row) {
+                let idsParam = {};
+                switch (type) {
+                    case 'one':
+                        let id = parseInt(row.id);
+                        if(id <= 0) {
+                            this.$message({
+                                message: '请选择要删除的数据',
+                                type: 'warning'
+                            });
+                            return false;
+                        }
+                        idsParam = {ids: [id]};
+                        break;
+                    case 'multi':
+                        let ids = this.util.getIdByArr(this.checkAll);
+                        if(ids.length <= 0) {
+                            this.$message({
+                                message: '请选择要删除的数据',
+                                type: 'warning'
+                            });
+                            return false;
+                        }
+                        idsParam = {ids: ids};
+                        break;
+                    default:
+                        break;
+                }
+
+                this.$confirm('确认要恢复该文章吗？', '提示', {
+                    type: 'warning'
+                }).then(() => {
+                    this.loading = true;
+                    window.axios.put('/trashes/update', idsParam).then((response) => {
+                        let res = response.data;
+                        if(res.status === 0 ) {
+                            if (type === 'one') {
+                                this.util.removeByValue(this.listData, row.id);
+                            } else {
+                                for (let index in this.checkedAll) {
+                                    this.util.removeByValue(this.listData, this.checkedAll[index].id);
+                                }
+                            }
+                        }
+                        this.$message({
+                            message: res.message,
+                            type: res.status === 0 ? 'success' : 'error'
+                        });
+                        this.listLoading = false;
+                    }).catch((error) => {
+                        console.log(error);
+                        this.loading = false;
+                    });
+                }).catch(() => {
+
+                });
+            },
             filterCategory: function (value) {
                 this.getData();
             },
@@ -103,7 +156,7 @@
                 };
 
                 //console.log(query);
-                window.axios.get('/posts', { params: query }).then(function (response) {
+                window.axios.get('/trashes', { params: query }).then(function (response) {
                     let res = response.data;
                     if (res.status === 0) {
                         let data = res.data;
@@ -131,7 +184,7 @@
                 this.getData();
                 //console.log(`当前页: ${val}`);
             },
-            handleDistory: function (type, row) {
+            handleDestroy: function (type, row) {
                 let _this = this, idsParam = {};
                 switch (type) {
                     case 'one':
@@ -146,7 +199,7 @@
                         idsParam = {ids: [id]};
                         break;
                     case 'multi':
-                        var ids = _this.util.getIdByArr(_this.checkedAll);
+                        let ids = _this.util.getIdByArr(_this.checkedAll);
                         if (ids.length <= 0) {
                             _this.$message({
                                 message: '请选择需要删除的数据',
@@ -164,7 +217,7 @@
                     //type: 'warning'
                 }).then(() => {
                     _this.listLoading = true;
-                    window.axios.delete('/posts/destroy', { data: idsParam }).then(function (response) {
+                    window.axios.delete('/trashes/destroy', { data: idsParam }).then(function (response) {
                         let res = response.data;
                         if(res.status === 0 ) {
                             if (type === 'one') {

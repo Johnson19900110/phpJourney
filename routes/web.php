@@ -38,5 +38,6 @@ Route::group(['middleware' => 'auth', 'prefix' => 'back', 'namespace' => 'Backen
     Route::resource('/category', 'CategoryController');
     Route::resource('/posts', 'PostController');
     Route::resource('/comment', 'CommentController');
+    Route::resource('/trashes', 'TrashController');
     Route::post('/dashboard', 'IndexController@statistical');
 });

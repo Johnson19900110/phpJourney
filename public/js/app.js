@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "./";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 154);
+/******/ 	return __webpack_require__(__webpack_require__.s = 164);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -273,7 +273,7 @@ function deepMerge(target, source) {
   }
   return target;
 }
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8)))
 
 /***/ }),
 /* 1 */
@@ -10799,7 +10799,7 @@ Vue$3.compile = compileToFunctions;
 
 module.exports = Vue$3;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7), __webpack_require__(12)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8), __webpack_require__(12)))
 
 /***/ }),
 /* 4 */
@@ -11095,6 +11095,62 @@ var getValueByPath = exports.getValueByPath = function getValueByPath(object, pr
 /* 7 */
 /***/ (function(module, exports) {
 
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+// css base code, injected by the css-loader
+module.exports = function() {
+	var list = [];
+
+	// return the list of modules as css string
+	list.toString = function toString() {
+		var result = [];
+		for(var i = 0; i < this.length; i++) {
+			var item = this[i];
+			if(item[2]) {
+				result.push("@media " + item[2] + "{" + item[1] + "}");
+			} else {
+				result.push(item[1]);
+			}
+		}
+		return result.join("");
+	};
+
+	// import a list of modules into the list
+	list.i = function(modules, mediaQuery) {
+		if(typeof modules === "string")
+			modules = [[null, modules, ""]];
+		var alreadyImportedModules = {};
+		for(var i = 0; i < this.length; i++) {
+			var id = this[i][0];
+			if(typeof id === "number")
+				alreadyImportedModules[id] = true;
+		}
+		for(i = 0; i < modules.length; i++) {
+			var item = modules[i];
+			// skip already imported module
+			// this implementation is not 100% perfect for weird media query combinations
+			//  when a module is imported multiple times with different media queries.
+			//  I hope this will never occur (Hey this way we have smaller bundles)
+			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
+				if(mediaQuery && !item[2]) {
+					item[2] = mediaQuery;
+				} else if(mediaQuery) {
+					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
+				}
+				list.push(item);
+			}
+		}
+	};
+	return list;
+};
+
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports) {
+
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -11279,62 +11335,6 @@ process.chdir = function (dir) {
     throw new Error('process.chdir is not supported');
 };
 process.umask = function() { return 0; };
-
-
-/***/ }),
-/* 8 */
-/***/ (function(module, exports) {
-
-/*
-	MIT License http://www.opensource.org/licenses/mit-license.php
-	Author Tobias Koppers @sokra
-*/
-// css base code, injected by the css-loader
-module.exports = function() {
-	var list = [];
-
-	// return the list of modules as css string
-	list.toString = function toString() {
-		var result = [];
-		for(var i = 0; i < this.length; i++) {
-			var item = this[i];
-			if(item[2]) {
-				result.push("@media " + item[2] + "{" + item[1] + "}");
-			} else {
-				result.push(item[1]);
-			}
-		}
-		return result.join("");
-	};
-
-	// import a list of modules into the list
-	list.i = function(modules, mediaQuery) {
-		if(typeof modules === "string")
-			modules = [[null, modules, ""]];
-		var alreadyImportedModules = {};
-		for(var i = 0; i < this.length; i++) {
-			var id = this[i][0];
-			if(typeof id === "number")
-				alreadyImportedModules[id] = true;
-		}
-		for(i = 0; i < modules.length; i++) {
-			var item = modules[i];
-			// skip already imported module
-			// this implementation is not 100% perfect for weird media query combinations
-			//  when a module is imported multiple times with different media queries.
-			//  I hope this will never occur (Hey this way we have smaller bundles)
-			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
-				if(mediaQuery && !item[2]) {
-					item[2] = mediaQuery;
-				} else if(mediaQuery) {
-					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
-				}
-				list.push(item);
-			}
-		}
-	};
-	return list;
-};
 
 
 /***/ }),
@@ -11806,7 +11806,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = defaults;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8)))
 
 /***/ }),
 /* 15 */
@@ -13098,7 +13098,7 @@ module.exports = function xhrAdapter(config) {
   });
 };
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8)))
 
 /***/ }),
 /* 23 */
@@ -59322,7 +59322,7 @@ exports.default = {
     }
   }
 };
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8)))
 
 /***/ }),
 /* 87 */
@@ -82375,7 +82375,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-__webpack_require__(113);
+__webpack_require__(115);
 
 window.Vue = __webpack_require__(3);
 window.axios = __webpack_require__(36);
@@ -82391,7 +82391,7 @@ Vue.use(__WEBPACK_IMPORTED_MODULE_0_element_ui___default.a);
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('comment', __webpack_require__(126));
+Vue.component('comment', __webpack_require__(130));
 
 var app = new Vue({
   el: '#app'
@@ -82581,7 +82581,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* 110 */,
 /* 111 */,
 /* 112 */,
-/* 113 */
+/* 113 */,
+/* 114 */,
+/* 115 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
@@ -82639,8 +82641,6 @@ if (token) {
 // });
 
 /***/ }),
-/* 114 */,
-/* 115 */,
 /* 116 */,
 /* 117 */,
 /* 118 */,
@@ -82649,32 +82649,36 @@ if (token) {
 /* 121 */,
 /* 122 */,
 /* 123 */,
-/* 124 */
+/* 124 */,
+/* 125 */,
+/* 126 */,
+/* 127 */,
+/* 128 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(8)();
+exports = module.exports = __webpack_require__(7)();
 exports.push([module.i, "\n#respond {\n    color: #888;\n    font-size: 12px;\n    background: none;\n    margin: 3em 0;\n    position: relative;\n}\n#comments {\n    margin: 30px 0;\n}\n#comments p {\n    line-height: 1.8em;\n}\n#comments-navi {\n    border-bottom: 1px solid #f2f2f2;\n    padding-bottom: 5px;\n}\n#comments-navi {\n    margin: 20px 0;\n    font-size: 16px;\n}\n.comment_list {\n    padding: 0 10px;\n}\n.comment-body {\n    position: relative;\n    font-size: 13.5px;\n    min-height: 34px;\n    margin-bottom: 8px;\n    /*border-bottom: 1px #eee dashed;*/\n    padding-top: 10px;\n}\n.comment-body-parent {\n    min-height: 48px;\n    margin-bottom: 18px;\n}\n.comment-author,\n.children .ajax-live .comment-author {\n    float: left;\n    margin-right: 8px;\n}\n.comment-author img,\n.children .ajax-live .comment-author img {\n    border-radius: 50%;\n    height: 32px;\n    width: 32px;\n}\n.comment-body-parent .comment-author,\n.ajax-live .comment-author {\n    margin-right: 18px;\n}\n.comment-body-parent .comment-author img,\n.ajax-live .comment-author img {\n    height: 48px;\n    width: 48px;\n}\n.comment-author cite.fn {\n    font-style: normal;\n}\n.comment-author span.says {\n    display: none;\n}\n.comment-head {\n    margin: 0 0 5px 0;\n}\n.name {\n    line-height: 1.8em;\n}\n.children .name {\n    float: left;\n}\n.comment-entry {\n    margin: 5px 0 4px 0;\n    padding-bottom: 4px;\n}\n.comment-body-parent .comment-entry {\n    margin: 0 0 4px 0;\n    border-bottom: 1px solid #eee;\n    padding-bottom: 4px;\n}\n.comment-entry .floor {\n    float: right;\n    margin-top: -18px;\n    color: #BBB;\n    font-size: 11.2px;\n}\n.comment-entry .wp-smiley {\n    margin-top: -2px;\n}\n.comment-entry img {\n    max-width: 80%;\n}\n.depth-1 .comment-content {\n    overflow: hidden;\n}\n.children {\n    margin-left: 68px;\n}\n.depth-2 .children {\n    margin-left: 0;\n}\na.comment-reply-link {\n    margin-left: 1em;\n    color: #BBB;\n    font-size: 12px;\n}\n.children a.comment-reply-link {\n    float: right;\n}\n#respond {\n    color: #888;\n    font-size: 12px;\n    background: none;\n    margin: 3em 0;\n    position: relative;\n}\n.children #respond {\n    margin: 1em 0 3em;\n}\n#respond textarea {\n    width: 98%;\n    padding: 5px;\n}\nli.depth-1 #respond {\n    margin-left: 68px;\n}\nli.depth-2 #respond {\n    margin-left: 0;\n}\n.comment_list #respond textarea {\n    width: 95%;\n}\n.comment-form-author,\n.comment-form-email,\n.comment-form-url {\n    position: relative;\n    float: left;\n    margin: 12px 2% 12px 0;\n    width: 23%;\n}\n.comment-form-url {\n    width: 48%;\n}\n#markdown {\n    height: 88px;\n}\n#commentform {\n    padding-top: 20px;\n}\n#commentform p label {\n    line-height: 1px;\n    top: 0px;\n    position: absolute;\n    left: 6px;\n    background-color: #fff;\n    padding: 0 5px;\n    font-weight: normal;\n    font-size: 12px;\n}\n#commentform input {\n    width: 96%;\n    padding: 5px;\n    display: block;\n    line-height: 22px;\n}\n#commentform input#submit,\n#commentform input#url {\n    width: 100%;\n}\n#submit {\n    padding: 5px 15px;\n    cursor: pointer;\n    font-size: 14px;\n    color: #fff;\n    text-shadow: 1px 1px #424558;\n    border: 1px solid #424558;\n    border-radius: 4px;\n    background: #33495d;\n    /*background: url(\"../images/header.jpg\") #33495d no-repeat;\n      background-size: cover;*/\n}\n#submit:active {\n    color: #fff;\n    /*text-shadow: 1px 1px #fff;*/\n    border: 1px solid #ccc;\n    background: #5a6977;\n    background: -moz-linear-gradient(top, #fff, #f1f1f1);\n    background: -webkit-gradient(linear, 0 0, 0 100%, from(#4a5c6d), to(#3f5467));\n}\n.form-submit {\n    margin-top: 10px;\n}\n.reply {\n    padding-bottom: 10px;\n    font-size: 12px;\n}\n.commentlist li.depth-1 {\n    margin-bottom: 24px;\n    line-height: 18px;\n}\n.comment_list li p {\n    clear: both;\n    margin-bottom: 5px;\n}\n#commentform input#comment_mail_notify {\n    display: inline;\n    width: 15px;\n}\n#comment-edit-link,\n.comment-notes,\n.comment-form-comment label,\n.form-allowed-tags {\n    display: none;\n}\ninput[type^=\"text\"],\ninput[type^=\"password\"],\ntextarea {\n    border: 1px solid #ddd;\n}\n.butterBar {\n    margin-left: 36%;\n    max-width: 640px;\n    position: fixed;\n    text-align: center;\n    top: 0;\n    width: 58%;\n    z-index: 800;\n}\n.butterBar--center {\n    left: 50%;\n    margin-left: -320px;\n}\n.butterBar-message {\n    background: rgba(255, 255, 255, 0.97);\n    border-bottom-left-radius: 4px;\n    border-bottom-right-radius: 4px;\n    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.25), 0 0 1px rgba(0, 0, 0, 0.35);\n    display: inline-block;\n    font-size: 14px;\n    margin-bottom: 0;\n    padding: 12px 25px;\n}\n", ""]);
 
 /***/ }),
-/* 125 */,
-/* 126 */
+/* 129 */,
+/* 130 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(153)
+__webpack_require__(163)
 
 var Component = __webpack_require__(9)(
   /* script */
   __webpack_require__(104),
   /* template */
-  __webpack_require__(143),
+  __webpack_require__(151),
   /* scopeId */
   null,
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/johnson/www/phpJourney/resources/assets/app/js/components/comment.vue"
+Component.options.__file = "D:\\WWW\\phpJourney\\resources\\assets\\app\\js\\components\\comment.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] comment.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -82695,10 +82699,6 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 127 */,
-/* 128 */,
-/* 129 */,
-/* 130 */,
 /* 131 */,
 /* 132 */,
 /* 133 */,
@@ -82711,7 +82711,15 @@ module.exports = Component.exports
 /* 140 */,
 /* 141 */,
 /* 142 */,
-/* 143 */
+/* 143 */,
+/* 144 */,
+/* 145 */,
+/* 146 */,
+/* 147 */,
+/* 148 */,
+/* 149 */,
+/* 150 */,
+/* 151 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -82928,22 +82936,24 @@ if (false) {
 }
 
 /***/ }),
-/* 144 */,
-/* 145 */,
-/* 146 */,
-/* 147 */,
-/* 148 */,
-/* 149 */,
-/* 150 */,
-/* 151 */,
 /* 152 */,
-/* 153 */
+/* 153 */,
+/* 154 */,
+/* 155 */,
+/* 156 */,
+/* 157 */,
+/* 158 */,
+/* 159 */,
+/* 160 */,
+/* 161 */,
+/* 162 */,
+/* 163 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(124);
+var content = __webpack_require__(128);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -82963,7 +82973,7 @@ if(false) {
 }
 
 /***/ }),
-/* 154 */
+/* 164 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(100);

@@ -20,7 +20,7 @@ class UserTableSeeder extends Seeder
                 'id' => 1,
                 'name' => 'Johnson',
                 'email' => 'phpjourney@johnson.com',
-                'password' => '$2y$10$mHewdI8KU9EtclzzEwICZe2wf6qoFK6aaB5CFOvHx7BfetFdTKNjm',
+                'password' => '$2y$10$mHewdI8KU9EtclzzEwICZe2wf6qoFK6aaB5CFOvHx7BfetFdTKNjm',   // 123456789
                 'remember_token' => 'tDpcjqLYBeWU11ULTVcmsIFaaSiqdvVh8zDeNbFZ29lhqQNUR3Ki0QtEzCNd',
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
