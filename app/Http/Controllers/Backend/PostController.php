@@ -17,7 +17,7 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request, $page = 1)
+    public function index(Request $request)
     {
         //
         try {
@@ -132,23 +132,10 @@ class PostController extends Controller
         try{
             $post = Post::find($id);
 
-            $tags_ids = PostsTag::where('post_id', $post->id)->get();
-
-            if(count($tags_ids)) {
-                $ids = array();
-                foreach ($tags_ids as $tags_id) {
-                    $ids[] = $tags_id->tags_id;
-                }
-
-                $tags = Tag::whereIn('id', $ids)->get();
-            }else {
-                $tags = [];
-            }
-
             return response()->json(array(
                 'status' => 0,
                 'data' => $post,
-                'tags' => $tags,
+                'tags' => $post->tags,
             ));
         }catch (\Exception $exception) {
             Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
@@ -194,8 +181,8 @@ class PostController extends Controller
 
             DB::transaction(function () use ($post, $tags) {
                 $post->update();
-                PostsTag::where('post_id', $post->id)->delete();
                 if(!empty($tags)) {
+                    $tag_ids = array();
                     foreach ($tags as $tag) {
                         if(!$tag_id = Tag::where('tags_flag', strtolower($tag))->value('id')) {
                             $tag_id = Tag::insertGetId(array(
@@ -205,12 +192,10 @@ class PostController extends Controller
                                 'updated_at' => date('Y-m-d H:i:s'),
                             ));
                         }
+                        $tag_ids[] = $tag_id;
 
-                        PostsTag::insert(array(
-                            'post_id' => $post->id,
-                            'tag_id' => $tag_id,
-                        ));
                     }
+                    $post->tags()->sync($tag_ids);
                 }
             });
 
@@ -250,7 +235,7 @@ class PostController extends Controller
         try {
             DB::transaction(function () use($ids) {
                 Post::destroy($ids);
-                PostsTag::whereIn('post_id', $ids)->delete();
+//                PostsTag::whereIn('post_id', $ids)->delete();
             });
 
             return response()->json(array(
