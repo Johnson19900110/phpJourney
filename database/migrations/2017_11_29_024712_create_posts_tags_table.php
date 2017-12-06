@@ -16,7 +16,7 @@ class CreatePostsTagsTable extends Migration
         if (!Schema::hasTable('posts_tags')) {
             //
             Schema::create('posts_tags', function (Blueprint $table) {
-                $table->integer('posts_id');
+                $table->integer('post_id');
                 $table->integer('tags_id');
             });
         }
