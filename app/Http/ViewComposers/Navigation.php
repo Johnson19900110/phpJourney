@@ -23,16 +23,8 @@ class Navigation
      */
     public function compose(View $view)
     {
-        $redis_key = 'category';
-        $redis = Redis::connection('categories');
-
-        if($redis->exists($redis_key)) {
-            $categories = json_decode($redis->get($redis_key));
-        }else {
-            $categories = Category::get();
-            $redis->set($redis_key, json_encode($categories));
-        }
-
+        $categories = Category::get();
+        
         $view->with('categories', ($categories));
     }
 }

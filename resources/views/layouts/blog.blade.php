@@ -15,7 +15,7 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
     <!-- iconMoon -->
-    <link rel="stylesheet" href="{{ asset('icomoon/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('icomoon/style.css') }}?time={{ time() }}">
 
     <!-- Script -->
     {{--<script src="{{ asset('js/vue/vue.js') }}"></script>--}}
