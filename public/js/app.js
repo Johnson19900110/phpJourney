@@ -13870,12 +13870,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 if (res) {
                     if (res.status === 422) {
                         for (var index in res.data.errors) {
-                            console.log(_this.$message);
-                            _this.$message({
-                                title: '警告',
-                                message: res.data.errors[index][0],
-                                type: 'warning'
-                            });
                             alert(res.data.errors[index][0]);
                         }
                     }
@@ -13889,10 +13883,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         getData: function getData() {
             var _this = this;
             window.axios.get('/comments/' + _this.post).then(function (response) {
-                console.log(response);
                 var res = response.data;
                 if (res.status === 0) {
-                    console.log(res.comments);
                     _this.comments = res.comments;
                 }
             }).catch(function (error) {

@@ -114,12 +114,6 @@
                     if (res) {
                         if (res.status === 422) {
                             for (let index in res.data.errors) {
-                                console.log(_this.$message);
-                                _this.$message({
-                                    title: '警告',
-                                    message: res.data.errors[index][0],
-                                    type: 'warning'
-                                });
                                 alert(res.data.errors[index][0]);
                             }
                         }
@@ -134,10 +128,8 @@
             getData: function () {
                 var _this = this;
                 window.axios.get('/comments/' + _this.post).then(function (response) {
-                    console.log(response);
                     let res = response.data;
                     if(res.status === 0) {
-                        console.log(res.comments);
                         _this.comments = res.comments;
                     }
 

@@ -24,7 +24,7 @@ class Navigation
     public function compose(View $view)
     {
         $categories = Category::get();
-        
+
         $view->with('categories', ($categories));
     }
 }
