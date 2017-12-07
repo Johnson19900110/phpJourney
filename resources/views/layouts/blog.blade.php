@@ -12,7 +12,7 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}?time={{ time() }}" rel="stylesheet">
+    {{--<link href="{{ asset('css/app.css') }}?time={{ time() }}" rel="stylesheet">--}}
 
     <!-- iconMoon -->
     <link rel="stylesheet" href="{{ asset('icomoon/style.css') }}?time={{ time() }}">
@@ -135,7 +135,7 @@
 
 <!-- Scripts -->
 @section('vue-js')
-    <script src="{{ asset('js/app.js') }}?time={{ time() }}"></script>
+    {{--<script src="{{ asset('js/app.js') }}?time={{ time() }}"></script>--}}
 @show
 </body>
 </html>
