@@ -51,7 +51,7 @@
             padding: 25px;
             float: left;
             height: 100%;
-            background: url("/images/left-bg.jpg?ver={{ time() }}}}") no-repeat;
+            background: url("{{ asset('/images/left-bg.jpg') }}") no-repeat;
             background-size: 100% 100%;
         }
 

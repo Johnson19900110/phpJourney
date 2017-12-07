@@ -21,30 +21,14 @@ class HomeController extends Controller
      */
     public function index(Request $request) {
         try {
-            $redis_key = 'posts_index';
-            $redis = Redis::connection('posts');
-//            $redis->del($redis_key);
-
-            if ($redis->exists($redis_key)) {
-                $posts = json_decode($redis->get($redis_key));
-//                dd($posts);
-            }else {
-                // 分页获取所有文章
-                $posts = Post::orderBy('id', 'desc')->paginate(15);
-                foreach ($posts as $post) {
-                    $post->tags;
-                }
-
-                $links = $posts->links()->toHtml();
-                $posts = json_decode(json_encode($posts));
-                $posts->links = $links;
-
-                $redis->set($redis_key, json_encode($posts));
-            }
+            // 分页获取所有文章
+            $posts = Post::orderBy('id', 'desc')->get();
 
             return view('index', array(
                 'posts' => $posts
             ));
+
+
         }catch (\Exception $exception) {
             Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
             abort(500);
