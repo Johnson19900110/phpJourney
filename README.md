@@ -1,8 +1,8 @@
 # johnsonJourney
 #### 1、概述
 本项目使用 PHP 框架 Laravel 5.5 进行开发。系统后台使用了Vuejs + Element-UI实现完全的前后端分离。
-*    项目地址：[http://phpjourney.com]()(正在备案，暂时可通过[http://47.94.11.137]()访问)
-*    GitHub地址：[https://github.com/Johnson19900110/phpJourney]()
+*    项目地址：[http://phpjourney.com](http://phpjourney.com)(正在备案，暂时可通过[http://47.94.11.137](http://47.94.11.137)访问)
+*    GitHub地址：[https://github.com/Johnson19900110/phpJourney](https://github.com/Johnson19900110/phpJourney)
 #### 2、功能特性
 *   分类管理
 *   标签管理
@@ -40,6 +40,7 @@
 ##### 前后台入口
 * 前台入口：`http://example.com/`
 * 后台入口：`http://example.com/back`
+
 默认用户名为：phpjourney@johnson.com ，密码为：123456789
 
 默认前端编译的js文件和css已经编译好了，如果你不需要修改样式，那到此就结束了，否则你就要安装nodejs
