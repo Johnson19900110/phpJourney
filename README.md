@@ -1,4 +1,4 @@
-# johnsonJourney
+# phpJourney
 #### 1、概述
 本项目使用 PHP 框架 Laravel 5.5 进行开发。系统后台使用了Vuejs + Element-UI实现完全的前后端分离。
 *    项目地址：[http://phpjourney.xin](http://phpjourney.xin)(正在备案，暂时可通过[http://47.94.11.137](http://47.94.11.137)访问)
