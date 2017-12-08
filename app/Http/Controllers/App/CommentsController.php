@@ -43,6 +43,8 @@ class CommentsController extends Controller
                 'post_id' => 'required',
                 'name' => 'required',
                 'email' => 'required|email',
+            ),array(
+                'email' => '邮箱不合法'
             ));
 
             $comment = new Comment();

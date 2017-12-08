@@ -5,16 +5,16 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-require('./bootstrap');
+// require('./bootstrap');
 
 
 window.Vue = require('vue');
 window.axios = require('axios');
 window.marked = require('marked');
 
-import ElementUI from 'element-ui';
-
-Vue.use(ElementUI);
+// import ElementUI from 'element-ui';
+//
+// Vue.use(ElementUI);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

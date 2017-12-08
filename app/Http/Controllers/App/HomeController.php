@@ -21,30 +21,14 @@ class HomeController extends Controller
      */
     public function index(Request $request) {
         try {
-            $redis_key = 'posts_index';
-            $redis = Redis::connection('posts');
-//            $redis->del($redis_key);
-
-            if ($redis->exists($redis_key)) {
-                $posts = json_decode($redis->get($redis_key));
-//                dd($posts);
-            }else {
-                // 分页获取所有文章
-                $posts = Post::orderBy('id', 'desc')->paginate(15);
-                foreach ($posts as $post) {
-                    $post->tags;
-                }
-
-                $links = $posts->links()->toHtml();
-                $posts = json_decode(json_encode($posts));
-                $posts->links = $links;
-
-                $redis->set($redis_key, json_encode($posts));
-            }
+            // 分页获取所有文章
+            $posts = Post::orderBy('id', 'desc')->paginate(15);
 
             return view('index', array(
                 'posts' => $posts
             ));
+
+
         }catch (\Exception $exception) {
             Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
             abort(500);
@@ -58,16 +42,7 @@ class HomeController extends Controller
     public function post(int $id)
     {
         try{
-            $redis_key = 'posts-' . $id;
-            $redis = Redis::connection('posts');
-
-            if($redis->exists($redis_key)) {
-                $post = json_decode($redis->get($redis_key));
-            }else {
-                $post = Post::find(intval($id));
-                $redis->set($redis_key, json_encode($post));
-            }
-
+            $post = Post::find(intval($id));
 
             if(empty($post)) {
                 throw new \Exception('很抱歉，页面找不到了', 404);
@@ -90,19 +65,9 @@ class HomeController extends Controller
     public function tags($tags_flag)
     {
         try {
+            $posts = Tag::where('tags_flag', $tags_flag)->first()->posts()->paginate(15);
 
-            $redis_key = 'posts-' . $tags_flag;
-            $redis = Redis::connection('posts');
-
-            if($redis->exists($redis_key)) {
-                $posts = json_decode($redis->get($redis_key));
-            }else {
-                $posts = Tag::where('tags_flag', $tags_flag)->first()->posts()->paginate(15);
-                $redis->set($redis_key, json_encode($posts));
-            }
-
-
-            if(empty($posts)) {
+            if(empty($posts->items())) {
                 throw new \Exception('很抱歉，页面找不到了', 404);
             }
 
@@ -119,14 +84,7 @@ class HomeController extends Controller
     public function categories($category_id)
     {
         try {
-            $redis_key = 'post-category-' . $category_id;
-            $redis = Redis::connection('categories');
-            if($redis->exists($redis_key)) {
-                $posts = json_decode($redis->get($redis_key));
-            }else {
-                $posts = Post::where('category_id', $category_id + 0)->paginate(15);
-                $redis->set($redis_key, json_encode($posts));
-            }
+            $posts = Post::where('category_id', $category_id + 0)->paginate(15);
 
             if(empty($posts->items())) {
                 throw new \Exception('抱歉，页面找不到了', 404);

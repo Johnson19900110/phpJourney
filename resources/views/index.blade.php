@@ -39,7 +39,7 @@
 @section('rightSide')
     <ul>
 
-        @foreach($posts->data as $post)
+        @foreach($posts as $post)
             <li style="border-bottom: 1px solid #c4c4c4;">
                 <h3 class="title"><a href="{{ route('post', $post->id) }}">{{ $post->title }}</a></h3>
                 <div class="info">
@@ -56,5 +56,5 @@
             </li>
         @endforeach
     </ul>
-    {!! $posts->links !!}
+    {!! $posts->links() !!}
 @endsection
