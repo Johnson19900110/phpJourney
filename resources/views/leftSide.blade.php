@@ -19,7 +19,7 @@
     <div class="clearfix"></div>
 
     <div class="icomoon">
+        <a href="http://www.cnblogs.com/johnson108178" target="_blank"><span class="icon-blogger2"></span></a>
         <a href="https://github.com/Johnson19900110" target="_blank"><span class="icon-github"></span></a>
-
     </div>
 </aside>
