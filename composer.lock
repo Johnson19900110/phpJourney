@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "bd9e4c76707e78fed8ab9d99b5924baf",
-    "content-hash": "e1761c301ebd98d19e2ab9a9dd7846e5",
+    "hash": "4e3b9bcd675bcf78084c3e5244c5864e",
+    "content-hash": "e4a467e92c619a43bdf8bf95ea5fcffd",
     "packages": [
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -1359,6 +1359,61 @@
                 "mailer"
             ],
             "time": "2017-05-20 06:20:27"
+        },
+        {
+            "name": "swooletw/laravel-swoole",
+            "version": "2.0.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/swooletw/laravel-swoole.git",
+                "reference": "03c9513a1f60c8215f32c1a24c2f750dcd90d909"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/swooletw/laravel-swoole/zipball/03c9513a1f60c8215f32c1a24c2f750dcd90d909",
+                "reference": "03c9513a1f60c8215f32c1a24c2f750dcd90d909",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/console": "~5.1",
+                "illuminate/contracts": "~5.1",
+                "illuminate/http": "~5.1",
+                "illuminate/support": "~5.1"
+            },
+            "require-dev": {
+                "laravel/lumen-framework": "~5.1",
+                "phpunit/phpunit": "~6.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "SwooleTW\\Http\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Huang Yi",
+                    "email": "coodeer@163.com"
+                },
+                {
+                    "name": "Albert Chen",
+                    "email": "albert@unisharp.com"
+                }
+            ],
+            "description": "High performance HTTP server based on Swoole. Speed up your Laravel and Lumen applications.",
+            "keywords": [
+                "http",
+                "laravel",
+                "lumen",
+                "performance",
+                "server",
+                "swoole"
+            ],
+            "time": "2017-12-03 12:50:23"
         },
         {
             "name": "symfony/console",

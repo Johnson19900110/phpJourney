@@ -165,6 +165,11 @@ return [
         Illuminate\View\ViewServiceProvider::class,
 
         /*
+         * swoole-http
+         */
+        SwooleTW\Http\LaravelServiceProvider::class,
+
+        /*
          * Package Service Providers...
          */
 
