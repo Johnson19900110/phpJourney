@@ -12,7 +12,7 @@
     </div>
 
     <ul>
-        <li><a href="{{ config('app.url') }}">首页</a></li>
+        <li><a href="/">首页</a></li>
         @include('widgets.navigation')
     </ul>
 
