@@ -4,6 +4,8 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use SwooleTW\Http\Commands\HttpServerCommand;
+use test\Mockery\SubclassWithFinalWakeup;
 
 class Kernel extends ConsoleKernel
 {
@@ -14,6 +16,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         //
+        HttpServerCommand::class,
     ];
 
     /**
