@@ -18,12 +18,14 @@ class HomeController extends Controller
     {
         try
         {
-            $serialize = new Serializer(new TokenAnalyzer());
-            $links = DB::connection('mysql')->table('users');
+            $params = array(
+                'table' => 'users',
+                'type' => 'first'
+            );
 
-            dd($serialize->serialize(function () use($links) {
-                return $links;
-            }));
+            $data = $this->mysqlLink($params);
+
+            dd($data);
         }catch (ModelNotFoundException $exception) {
             dd($exception);
         }catch (\ErrorException $exception) {
