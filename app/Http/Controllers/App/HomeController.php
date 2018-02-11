@@ -31,6 +31,7 @@ class HomeController extends Controller
 
     public function test()
     {
+        opcache_reset();
         try
         {
             $params = array(
