@@ -5,7 +5,7 @@
  * Date: 2018/2/11
  */
 
-namespace App\MysqlPool\Client;
+namespace App\MysqlPool;
 
 
 trait Client
