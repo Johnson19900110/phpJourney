@@ -84,13 +84,13 @@ class MysqlPool extends Command
         $server->start();
     }
 
-    protected function onStart($serv)
+    public function onStart($serv)
     {
         // 设置进程名称
         cli_set_process_title("mysql_pool");
     }
 
-    protected function onReceive($server, $fd, $from_id, $data)
+    public function onReceive($server, $fd, $from_id, $data)
     {
         //taskwait can deliver one task
         // Then block and wait for the task to complete
@@ -109,7 +109,7 @@ class MysqlPool extends Command
         }
     }
 
-    protected function onTask($server, $task_id, $from_id, $data)
+    public function onTask($server, $task_id, $from_id, $data)
     {
         static $link = null;
         if ($link == null) {
