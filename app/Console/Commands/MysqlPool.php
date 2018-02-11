@@ -55,7 +55,7 @@ class MysqlPool extends Command
 
     protected function mysqlPoolStart()
     {
-        $server = new swoole_server("0.0.0.0", 9508, SWOOLE_BASE, SWOOLE_SOCK_TCP);
+        $server = new \swoole_server("0.0.0.0", 9508, SWOOLE_BASE, SWOOLE_SOCK_TCP);
         $server->set(array(
             'worker_num' => 100,
             'task_worker_num' => 10, //MySQL连接的数量

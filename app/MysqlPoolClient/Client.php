@@ -16,7 +16,7 @@ trait Client
         if(empty($data)) {
             return 'Params is empty';
         }
-        $client = new swoole_client(SWOOLE_SOCK_TCP);
+        $client = new \swoole_client(SWOOLE_SOCK_TCP);
         $client->connect('0.0.0.0', 9508, 10) or die("Connect Pool Failure !");
 
         $client->send($data);
