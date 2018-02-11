@@ -87,6 +87,7 @@ class MysqlPool extends Command
     public function onStart($serv)
     {
         // 设置进程名称
+        echo 'Hello' . $serv->fd;
         cli_set_process_title("mysql_pool");
     }
 
@@ -94,6 +95,7 @@ class MysqlPool extends Command
     {
         //taskwait can deliver one task
         // Then block and wait for the task to complete
+        echo serialize($data);
         $result = $server->taskwait($data);
         if ($result !== false) {
             list($status, $db_res) = explode(':', $result, 2);
