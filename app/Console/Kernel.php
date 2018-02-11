@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Console\Commands\MysqlPool;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use SwooleTW\Http\Commands\HttpServerCommand;
@@ -17,6 +18,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         //
         HttpServerCommand::class,
+        MysqlPool::class,
     ];
 
     /**
