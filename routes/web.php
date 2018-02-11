@@ -14,7 +14,9 @@
  * 前台
  */
 
+
 Route::group(['namespace' => 'App'], function () {
+    Route::get('/test', 'HomeController@test');
     Route::get('/', 'HomeController@index')->name('home');
     Route::get('/post/{id}', 'HomeController@post')->name('post');
     Route::get('/tags/{flag}', 'HomeController@tags')->name('tags');

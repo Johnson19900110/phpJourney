@@ -50,7 +50,7 @@ $app = require_once __DIR__.'/../bootstrap/app.php';
 */
 
 $kernel = $app->make(Illuminate\Contracts\Http\Kernel::class);
-
+//$kernel = new \Illuminate\Foundation\Http\Kernel($app, new \Illuminate\Routing\Router(new \Illuminate\Events\Dispatcher()));
 $response = $kernel->handle(
     $request = Illuminate\Http\Request::capture()
 );

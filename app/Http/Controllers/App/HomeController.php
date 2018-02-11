@@ -4,16 +4,34 @@ namespace App\Http\Controllers\App;
 
 use App\Post;
 use App\Tag;
-use Illuminate\Database\QueryException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Redis;
-use Mockery\Exception;
-use phpDocumentor\Reflection\Types\Integer;
+use SuperClosure\Analyzer\TokenAnalyzer;
+use SuperClosure\Serializer;
 
 class HomeController extends Controller
 {
+    public function test()
+    {
+        try
+        {
+            $serialize = new Serializer(new TokenAnalyzer());
+            $links = DB::connection('mysql')->table('users');
+
+            dd($serialize->serialize(function () use($links) {
+                return $links;
+            }));
+        }catch (ModelNotFoundException $exception) {
+            dd($exception);
+        }catch (\ErrorException $exception) {
+            var_dump($exception->getMessage());
+        }finally{
+            echo 'Hi';
+        }
+    }
     /**
      * 首页
      * @param Request $request
