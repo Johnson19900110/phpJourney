@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\MysqlPool\Client\Client as MysqlPoolClient;
+use App\MysqlPool\Client as MysqlPoolClient;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
