@@ -37,7 +37,7 @@ class HomeController extends Controller
                 'table' => 'users',
                 'type' => 'first'
             );
-
+dd($params);
             $data = $this->mysqlLink($params);
 
             dd($data);
