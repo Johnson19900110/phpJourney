@@ -168,7 +168,6 @@ return [
          * swoole-http
          */
         SwooleTW\Http\LaravelServiceProvider::class,
-	Laravoole\LaravooleServiceProvider::class,
 
         /*
          * Package Service Providers...
