@@ -19,36 +19,27 @@ class HomeController extends Controller
         $client = new \swoole_client(SWOOLE_SOCK_TCP);
         $client->connect('0.0.0.0', 9508, 10) or die("Connect Pool Failure !");
 
-        $client->send($data);
+        $client->send(json_encode($data));
         //Blocking for wait result
 
         $data = $client->recv();
 
-        $client->close();
+        //$client->close();
 
         return $data;
     }
 
     public function test()
     {
-        opcache_reset();
-        try
-        {
             $params = array(
                 'table' => 'users',
                 'type' => 'first'
             );
-dd($params);
+	    
             $data = $this->mysqlLink($params);
 
             dd($data);
-        }catch (ModelNotFoundException $exception) {
-            dd($exception);
-        }catch (\ErrorException $exception) {
-            var_dump($exception->getMessage());
-        }finally{
-            echo 'Hi';
-        }
+        
     }
     /**
      * 首页
