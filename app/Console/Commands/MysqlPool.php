@@ -97,20 +97,20 @@ class MysqlPool extends Command
     {
         static $link = null;
         if ($link == null) {
-            $link = mysqli_connect("47.94.11.137", "root", "108178", "gogs");
+//            $link = mysqli_connect("47.94.11.137", "root", "108178", "gogs");
+            $link = DB::connection('mysql');
             if (!$link) {
                 $link = null;
-                $serv->finish("ER:" . mysqli_error($link));
+                $serv->finish("ER:Mysql Connect Failed!!");
                 return;
             }
         }
-        $result = $link->query($sql);
+        $result = $link->table('users')->get();
         if (!$result) {
-            $serv->finish("ER:" . mysqli_error($link));
+            $serv->finish("ER:Sql Query Failed!!");
             return;
         }
-        $data = $result->fetch_all(MYSQLI_ASSOC);
-        $serv->finish("OK:" . serialize($data));
+        $serv->finish("OK:" . serialize($result));
     }
 
     public function onFinish($serv, $data)
