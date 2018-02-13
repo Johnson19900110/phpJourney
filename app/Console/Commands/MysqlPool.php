@@ -83,7 +83,7 @@ class MysqlPool extends Command
             list($status, $db_res) = explode(':', $result, 2);
             if ($status == 'OK') {
                 //数据库操作成功了，执行业务逻辑代码，这里就自动释放掉MySQL连接的占用
-                $serv->send($fd, var_export(unserialize($db_res), true) . "\n");
+                $serv->send($fd, $db_res);
             } else {
                 $serv->send($fd, $db_res);
             }

@@ -26,14 +26,14 @@ class HomeController extends Controller
 
         //$client->close();
 
-        return $data;
+        return unserialize($data);
     }
 
     public function test()
     {
             $params = array(
                 'table' => 'users',
-                'type' => 'first'
+                'type' => 'get'
             );
 	    
             $data = $this->mysqlLink($params);
