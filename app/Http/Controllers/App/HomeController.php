@@ -5,9 +5,12 @@ namespace App\Http\Controllers\App;
 use App\Post;
 use App\Tag;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\MySqlConnection;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use SuperClosure\Serializer;
 
 class HomeController extends Controller
 {
@@ -31,14 +34,14 @@ class HomeController extends Controller
 
     public function test()
     {
-            $params = array(
-                'table' => 'users',
-                'type' => 'first'
-            );
-	    
-            $data = $this->mysqlLink($params);
+        $params = array(
+            'table' => 'users',
+            'type' => 'first'
+        );
 
-            dd($data);
+        $data = $this->mysqlLink($params);
+
+        dd($data);
         
     }
     /**
