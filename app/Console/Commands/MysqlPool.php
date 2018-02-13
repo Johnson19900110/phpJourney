@@ -78,7 +78,6 @@ class MysqlPool extends Command
     {
         //taskwait就是投递一条任务，这里直接传递SQL语句了
         //然后阻塞等待SQL完成
-        echo $data;
         $result = $serv->taskwait($data);
         if ($result !== false) {
             list($status, $db_res) = explode(':', $result, 2);
@@ -96,8 +95,11 @@ class MysqlPool extends Command
 
     public function onTask($serv, $task_id, $from_id, $data)
     {
+        $data = json_decode($data, true);
+
         static $link = null;
         if ($link == null) {
+//            $link = mysqli_connect("47.94.11.137", "root", "108178", "gogs");
             $link = DB::connection('mysql');
             if (!$link) {
                 $link = null;
@@ -106,10 +108,28 @@ class MysqlPool extends Command
             }
         }
 
-        $data = json_decode($data);
-        var_dump($data);
+        if(!$table = $data['table']) {
+            $serv->finish("ER:" . serialize('Be lacking of table'));
+            return;
+        }
 
-        $result = $link->table('users')->get();
+        if(!$queryType = $data['type']) {
+            $serv->finish("ER:" . serialize('Be lacking of type'));
+            return;
+        }
+
+        $query = $link->table($table);
+
+        switch ($queryType) {
+            case 'find':
+                $result = $query->find($data['find']['id']);break;
+            case 'first':
+                $result = $query->first();break;
+            case 'get':
+            default:
+                $result = $query->get();
+        }
+
         if (!$result) {
             $serv->finish("ER:Sql Query Failed!!");
             return;
@@ -121,4 +141,5 @@ class MysqlPool extends Command
     {
         echo "AsyncTask Finish:Connect.PID=" . posix_getpid() . PHP_EOL;
     }
+
 }
