@@ -17,7 +17,6 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         //
-        HttpServerCommand::class,
         MysqlPool::class,
     ];
 
