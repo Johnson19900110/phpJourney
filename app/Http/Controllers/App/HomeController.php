@@ -50,6 +50,7 @@ class HomeController extends Controller
      */
     public function index(Request $request) {
         try {
+
             // 分页获取所有文章
             $posts = Post::orderBy('id', 'desc')->paginate(15);
 
@@ -59,6 +60,7 @@ class HomeController extends Controller
 
 
         }catch (\Exception $exception) {
+            dd($exception->getMessage());
             Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
             abort(500);
         }
