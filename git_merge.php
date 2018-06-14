@@ -12,6 +12,7 @@ if(!isset($options['t'])) {
     return;
 }
 
+
 if(!isset($options['m'])) {
     echo 'Be lacking of arguments:m' . PHP_EOL;
     return;
@@ -44,3 +45,4 @@ function getCommand($command)
     exec($command, $res);
     print_r($res);
 }
+
