@@ -14,10 +14,22 @@
  * 前台
  */
 
+Route::get('/mailable', function () {
+    $invoice = App\User::find(1);
+
+    return new App\Mail\UserLogin($invoice);
+});
 
 Route::group(['namespace' => 'App'], function () {
     Route::get('/test', 'HomeController@test');
+    Route::get('/redirect', 'HomeController@redirect');
+
+
+    Route::get('/auth/callback', 'HomeController@authCallback');
+
+
     Route::get('/', 'HomeController@index')->name('home');
+    Route::get('/search', 'HomeController@search')->name('search');
     Route::get('/post/{id}', 'HomeController@post')->name('post');
     Route::get('/tags/{flag}', 'HomeController@tags')->name('tags');
     Route::get('/category/{id}', 'HomeController@categories')->name('category');
@@ -43,3 +55,4 @@ Route::group(['middleware' => 'auth', 'prefix' => 'back', 'namespace' => 'Backen
     Route::resource('/trashes', 'TrashController');
     Route::post('/dashboard', 'IndexController@statistical');
 });
+

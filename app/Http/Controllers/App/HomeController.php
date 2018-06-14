@@ -2,18 +2,51 @@
 
 namespace App\Http\Controllers\App;
 
+use App\Http\Resources\UserResource;
+use App\Mail\UserLogin;
+use App\Notifications\InvoicePaid;
 use App\Post;
 use App\Tag;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Database\MySqlConnection;
+use App\User;
+use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
-use SuperClosure\Serializer;
+use Illuminate\Support\Facades\Mail;
 
 class HomeController extends Controller
 {
+
+    public function redirect()
+    {
+        $query = http_build_query([
+            'client_id' => 3,
+            'redirect_uri' => 'http://phpjourney.test/auth/callback',
+            'response_type' => 'code',
+            'scope' => '',
+        ]);
+
+        return redirect('http://permission.test/oauth/authorize?'.$query);
+    }
+
+    public function authCallback(Request $request){
+        $http = new Client();
+
+        $response = $http->post('http://permission.test/oauth', [
+            'form_params' => [
+                'grant_type' => 'authorization_code',
+                'client_id' => '3',  // your client id
+                'client_secret' => '3j9yagQtIcgGLuAhe6YkN6WrEM6ufQP25Ll3Hapu',   // your client secret
+                'redirect_uri' => 'http://phpjourney.test/auth/callback',
+                'code' => $request->code,
+            ],
+        ]);
+
+        return json_decode((string) $response->getBody(), true);
+    }
+
+
     protected function mysqlLink(Array $data)
     {
         if(empty($data)) {
@@ -34,6 +67,22 @@ class HomeController extends Controller
 
     public function test()
     {
+        Cache::tags(['people', 'artists'])->put('John', 'John', 3);
+        Cache::tags(['people', 'authors'])->put('Anne', 'Anne', 3);
+
+        dd(Cache::tags(['people', 'artists'])->get('John'));
+        $user = User::find(1);
+
+//        $user->notify(new InvoicePaid());
+
+//        $res = Mail::to($user)->send(new UserLogin($user));
+
+        /*Mail::send('测试邮件', [], function($message) {
+            $message->to('18301790572@qq.com')->subject('测试邮件');;
+        });*/
+
+        $user->posts;
+        return new UserResource($user);
         $params = array(
             'table' => 'users',
             'type' => 'get'
@@ -64,6 +113,18 @@ class HomeController extends Controller
             Log::info(__CLASS__ . '->' . __FUNCTION__ . ' Line:' . $exception->getLine() . ' ' . $exception->getMessage());
             abort(500);
         }
+    }
+
+    public function search(Request $request)
+    {
+        $q = $request->get('q', false);
+
+        $posts = [];
+        if($q !== false) {
+            $posts = Post::search($q)->paginate();
+        }
+
+        return view('index', compact('posts', 'q'));
     }
 
     /**

@@ -2,13 +2,15 @@
 
 namespace App;
 
+use App\Libraries\EsSearchable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Laravel\Scout\Searchable;
 
 class Post extends Model
 {
     //
-    use SoftDeletes;
+    use SoftDeletes, Searchable, EsSearchable;
 
     /**
      * 获取对应的分类category
@@ -60,5 +62,13 @@ class Post extends Model
     public function comments()
     {
         return $this->hasMany(Comment::class, 'post_id');
+    }
+
+    public function toSearchableArray()
+    {
+        return [
+            'title' => $this->title,
+            'content' => $this->content,
+        ];
     }
 }

@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Comment;
+use App\Mail\UserLogin;
 use App\Post;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class IndexController extends Controller
 {
@@ -18,7 +20,7 @@ class IndexController extends Controller
         return view('backend/index');
     }
 
-    public function statistical()
+    public function statistical(Request $request)
     {
         $data = array();
 

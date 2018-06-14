@@ -1,0 +1,27 @@
+<?php
+
+namespace App\Http\Resources;
+
+use Illuminate\Http\Resources\Json\Resource;
+
+class UserResource extends Resource
+{
+    /**
+     * Transform the resource into an array.
+     *
+     * @param  \Illuminate\Http\Request
+     * @return array
+     */
+    public function toArray($request)
+    {
+//        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'total' => $this->total,
+            'name' => $this->name,
+            'email' => $this->email,
+            'posts' => Posts::collection($this->whenLoaded('posts')),
+            'created_at' => $this->created_at,
+        ];
+    }
+}
