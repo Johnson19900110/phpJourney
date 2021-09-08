@@ -61,6 +61,7 @@
 swoole官网说：swoole_http_server对Http协议的支持并不完整，建议仅作为应用服务器。并且在前端增加Nginx作为代理
 所以我们还需要配置nginx文件。
 ```nginx
+
 server {
     listen 80;
     server_name your.domain.com;
